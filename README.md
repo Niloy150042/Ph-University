@@ -9,4 +9,4 @@
 
 ## Entity-Relationship (ER) Diagram
 
-![ER Diagram]([https://your-image-url.com/er-diagram.png](https://prnt.sc/lTTj1fC-CiNh))
+![ER Diagram](https://your-image-url.com/er-diagram.png)
