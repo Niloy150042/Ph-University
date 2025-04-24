@@ -5,10 +5,10 @@ import studentSchema from './student.zod.validation';
 const createstudent = async (req: Request, res: Response) => {
   try {
     const student = req.body;
-    const zodvalidationschema = studentSchema.parse(student);
+    // const zodvalidationschema = studentSchema.parse(student);
 
     const result =
-      await studentservices.createstudentintodb(zodvalidationschema);
+      await studentservices.createstudentintodb(student);
     res.status(201).json({
       success: true,
       message: 'student data is created successfully',

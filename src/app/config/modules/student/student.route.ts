@@ -1,10 +1,10 @@
 import  express  from "express";
 import { Studentcontrollers } from "./student.controller";
-const router = express.Router()
+const studentrouter = express.Router()
 
-router.post('/create-student',Studentcontrollers.createstudent);
+studentrouter.post('/create-student',Studentcontrollers.createstudent);
 
-router.get('/',Studentcontrollers.getallstudent)
-router.get('/:studentid',Studentcontrollers.getasinglestudentdata)
+// router.get('/',Studentcontrollers.getallstudent)
+// router.get('/:studentid',Studentcontrollers.getasinglestudentdata)
 
-export default  router
+export default  studentrouter
