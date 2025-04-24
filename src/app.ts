@@ -1,6 +1,7 @@
 import express, { Application, Request, Response } from 'express';
-import router from '../src/app/config/modules/student/student.route'
 import cors from 'cors';
+import router from './app/config/modules/user/user.route';
+
 const app: Application = express();
 
 app.use(express.json());

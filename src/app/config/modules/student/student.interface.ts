@@ -37,3 +37,6 @@ export type student = {
   isactive: 'active' | 'blocked';
   
 };
+export type user={
+  
+}
