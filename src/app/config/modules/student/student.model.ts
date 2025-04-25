@@ -38,10 +38,6 @@ const studentschema = new Schema<student>({
     type: nameschema,
     required: [true, 'Student name is required'],
   },
-  password: {
-    type: String,
-    required: true,
-  },
   user: {
     type: Schema.Types.ObjectId,
     ref: 'user',
@@ -90,24 +86,6 @@ const studentschema = new Schema<student>({
   profileimage: {
     type: String,
   },
-});
-
-studentschema.pre('save', async function (next) {
-  const saltround = 10;
-  console.log(this, 'we will save the data');
-
-  try {
-    const hashpassword = await bcrypt.hash(this.password, saltround);
-    this.password = hashpassword;
-  } catch (err) {
-    console.log(err);
-  }
-  next();
-});
-
-studentschema.post('save', function () {
-  console.log('we had save data successfully');
-  this.password = '';
 });
 
 export const studentmodel = model<student>('student', studentschema);

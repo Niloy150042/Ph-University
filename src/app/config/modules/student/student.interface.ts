@@ -26,7 +26,6 @@ export type student = {
   user:Types.ObjectId
   name: username;
   gender: 'male' | 'female'|'other';
-  password:string
   datofbirth: string;
   email: string;
   avatar: string;
