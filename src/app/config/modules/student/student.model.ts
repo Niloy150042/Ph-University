@@ -1,10 +1,11 @@
-import mongoose, { model, Schema } from 'mongoose';
+import { model, Schema } from 'mongoose';
 import {
   guardian,
   Localguardian,
   student,
   username,
 } from './student.interface';
+import bcrypt from 'bcrypt';
 
 const nameschema = new Schema<username>({
   firstname: { type: String, required: true },
@@ -36,6 +37,10 @@ const studentschema = new Schema<student>({
   name: {
     type: nameschema,
     required: [true, 'Student name is required'],
+  },
+  password: {
+    type: String,
+    required: true,
   },
   user: {
     type: Schema.Types.ObjectId,
@@ -87,16 +92,22 @@ const studentschema = new Schema<student>({
   },
 });
 
-// studentschema.pre('save', async function (next) {
-//   const saltround = 10;
-//   // eslint-disable-next-line @typescript-eslint/no-this-alias
-//   const user = this;
+studentschema.pre('save', async function (next) {
+  const saltround = 10;
+  console.log(this, 'we will save the data');
 
-//   next();
-// });
+  try {
+    const hashpassword = await bcrypt.hash(this.password, saltround);
+    this.password = hashpassword;
+  } catch (err) {
+    console.log(err);
+  }
+  next();
+});
 
-// studentschema.post('validate', function () {
-//   console.log('validate data successfully', this);
-// });
+studentschema.post('save', function () {
+  console.log('we had save data successfully');
+  this.password = '';
+});
 
 export const studentmodel = model<student>('student', studentschema);

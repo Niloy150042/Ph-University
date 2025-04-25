@@ -7,8 +7,7 @@ const createstudent = async (req: Request, res: Response) => {
     const student = req.body;
     // const zodvalidationschema = studentSchema.parse(student);
 
-    const result =
-      await studentservices.createstudentintodb(student);
+    const result = await studentservices.createstudentintodb(student);
     res.status(201).json({
       success: true,
       message: 'student data is created successfully',
@@ -39,7 +38,6 @@ const getallstudent = async (req: Request, res: Response) => {
     });
   }
 };
-
 const getasinglestudentdata = async (req: Request, res: Response) => {
   try {
     const { studentid } = req.params;
@@ -55,7 +53,9 @@ const getasinglestudentdata = async (req: Request, res: Response) => {
       data: err,
     });
   }
-};
+}
+
+
 
 export const Studentcontrollers = {
   createstudent,
