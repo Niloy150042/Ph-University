@@ -9,14 +9,15 @@ import userrouter from './app/config/modules/user/user.route';
 import studentrouter from './app/config/modules/student/student.route';
 import globalErrorHandler from './app/config/modules/utils/globalerrohandler';
 import notfound from './app/config/modules/utils/notfound';
+import router from './app/config/Routes/routes';
 
 const app: Application = express();
 
 app.use(express.json());
 app.use(cors());
 
-app.use('/api/v1/user', userrouter);
-app.use('/api/v1/student', studentrouter);
+app.use('/api/v1',router);
+
 
 app.get('/', (req: Request, res: Response) => {
   res.send('hello world');

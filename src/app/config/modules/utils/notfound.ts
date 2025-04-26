@@ -1,12 +1,12 @@
-import { Request, Response } from "express";
-import { normalize } from "path";
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { NextFunction, Request, Response } from 'express';
+import status from 'http-status';
 
-const notfound =(req:Request,res:Response)=>{
-    return res.status(500).send({
-        success:false,
-        message:"API not found",
-        
-    })
-}
+const notfound = (req: Request, res: Response) => {
+  return res.status(status.NOT_FOUND).send({
+    success: false,
+    message: 'API not found',
+  });
+};
 
-export default notfound
+export default notfound;
