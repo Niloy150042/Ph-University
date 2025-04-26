@@ -1,33 +1,32 @@
-import { NextFunction, Request, Response } from 'express';
-// import userzodvalidation from './user.validation';
+import { NextFunction, Request, RequestHandler, Response } from 'express';
 import { userservice } from './user.service';
 import sendresponse from '../utils/sendresponse';
 import status from 'http-status';
 
-const createstudent = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  const { student, password } = req.body;
-  // console.log(student,password);
-  // const zodvalidationschema = userzodvalidation.parse(user)
 
-  try {
-    const result = await userservice.createstudentintodb(student, password);
-    
-    sendresponse(res,{
-      statuscode:status.OK,
-      success:true,
-      message:'student creatd successfuly',
-      data:result
-    })
-    
+// following dry principle 
+const asynccatch = (fn:RequestHandler)=>{
+  return (req :Request,res:Response,next:NextFunction)=>{
+    Promise.resolve(fn(req,res,next)).catch(err=>next(err))
 
-  } catch (err) {
-    next(err);
   }
-};
+ 
+}
+
+const createstudent = asynccatch (async (req, res) => {
+  const { student, password } = req.body;
+
+  
+    const result = await userservice.createstudentintodb(student, password);
+
+    sendresponse(res, {
+      statuscode: status.OK,
+      success: true,
+      message: 'student creatd successfuly',
+      data: result,
+    });
+  
+})
 
 export const usercontroller = {
   createstudent,

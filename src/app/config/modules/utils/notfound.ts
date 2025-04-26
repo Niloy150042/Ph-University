@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { NextFunction, Request, Response } from 'express';
+import {  Request, Response } from 'express';
 import status from 'http-status';
 
 const notfound = (req: Request, res: Response) => {

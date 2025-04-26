@@ -15,6 +15,7 @@ const createstudentintodb = async (student: student, password: string) => {
   userdata.role = 'student';
 
   const newuser = await usermodel.create(userdata);
+
   //   create a student
   if (Object.keys(newuser).length) {
     student.id = newuser.id;
