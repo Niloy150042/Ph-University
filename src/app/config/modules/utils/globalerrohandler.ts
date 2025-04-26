@@ -1,20 +1,17 @@
-
 import { NextFunction, Request, Response } from 'express';
 
-// Optional: Custom error type if you want strong typing
-interface IError {
+// Correctly extending the built-in Error object
+interface IError extends Error {
   statusCode?: number;
-  message: string;
   stack?: string;
 }
 
-// Global error handler middleware
 const globalErrorHandler = (
   err: IError,
   req: Request,
   res: Response,
-  next: NextFunction,
-): any => {
+  next: NextFunction
+): Response => {
   const statusCode = err.statusCode || 500;
   const message = err.message || 'Something went wrong';
 
@@ -23,7 +20,7 @@ const globalErrorHandler = (
     message,
     error: {
       message: err.message,
-      stack: process.env.NODE_ENV === 'development' ? err.stack : undefined,
+    
     },
   });
 };

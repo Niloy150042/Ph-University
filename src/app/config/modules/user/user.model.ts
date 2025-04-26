@@ -43,7 +43,7 @@ userschema.pre('save', async function (next) {
 });
 
 userschema.post('save', async function () {
-  console.log( 'userpassword hashed successfully');
+  // console.log( 'userpassword hashed successfully');
   this.password = '';
 });
 
