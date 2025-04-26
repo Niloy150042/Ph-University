@@ -1,12 +1,8 @@
-import {  NextFunction, Request, RequestHandler, Response } from 'express';
 import { studentservices } from './student.servive';
+import catchasync from '../utils/catchasync'
 
 //assigning higher order function 
-const catchasync = (fn:RequestHandler)=>{
-  return (req :Request,res:Response,next:NextFunction) =>{
-    Promise.resolve(fn(req,res ,next)).catch(err=> next(err))
-  }
-}
+
 
 const createstudent = catchasync(async (req,res) => {
  

@@ -1,17 +1,11 @@
-import { NextFunction, Request, RequestHandler, Response } from 'express';
 import { userservice } from './user.service';
 import sendresponse from '../utils/sendresponse';
 import status from 'http-status';
+import asynccatch from '../utils/catchasync';
 
 
 // following dry principle 
-const asynccatch = (fn:RequestHandler)=>{
-  return (req :Request,res:Response,next:NextFunction)=>{
-    Promise.resolve(fn(req,res,next)).catch(err=>next(err))
 
-  }
- 
-}
 
 const createstudent = asynccatch (async (req, res) => {
   const { student, password } = req.body;
