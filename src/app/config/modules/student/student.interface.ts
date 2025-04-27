@@ -1,4 +1,6 @@
 import {  Types } from "mongoose";
+
+
 export type username = {
   firstname: string;
   middlename: string;
@@ -20,10 +22,11 @@ export type Localguardian = {
   address: string;
 };
 export type student = {
+  id: string;
   user:Types.ObjectId
   name: username;
   gender: 'male' | 'female'|'other';
-  datofbirth: string;
+  datofbirth: Date;
   email: string;
   avatar: string;
   contactnumber: string;
