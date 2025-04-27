@@ -1,6 +1,7 @@
 import experss from 'express';
 import studentrouter from '../modules/student/student.route';
 import userrouter from '../modules/user/user.route';
+import semesterrouter from '../modules/academicsemester/academic_semester.route';
 
 const router = experss.Router();
 
@@ -12,6 +13,10 @@ const modulerouter = [
   {
     path: '/users',
     route: userrouter,
+  },
+  {
+    path: '/semesters',
+    route: semesterrouter,
   },
 ];
 
