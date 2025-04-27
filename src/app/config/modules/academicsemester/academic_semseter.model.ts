@@ -1,6 +1,7 @@
 import { model, Schema } from 'mongoose';
 import { Tacademic_semester } from './academic_semester.interface';
 
+
 const semesterschema = new Schema<Tacademic_semester>({
   name: {
     type: String,
@@ -31,6 +32,42 @@ const semesterschema = new Schema<Tacademic_semester>({
     ],
     required: true,
   },
+ startMonth:{
+    type:String,
+    enum: [
+        'January',
+        'February',
+        'March',
+        'April',
+        'May',
+        'June',
+        'July',
+        'August',
+        'September',
+        'October',
+        'November',
+        'December',
+      ]
+ },
+ endMonth:{
+    type:String,
+    enum: [
+        'January',
+        'February',
+        'March',
+        'April',
+        'May',
+        'June',
+        'July',
+        'August',
+        'September',
+        'October',
+        'November',
+        'December',
+      ]
+ }
+},{
+    timestamps:true
 });
 
 export const semestermodel = model<Tacademic_semester>(
