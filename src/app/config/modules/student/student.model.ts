@@ -30,10 +30,7 @@ const localguardianshcema = new Schema<Localguardian>({
 });
 
 const studentschema = new Schema<student>({
-  id: {
-    type: String,
-    required: [true, 'Student ID is required'],
-  },
+ 
   name: {
     type: nameschema,
     required: [true, 'Student name is required'],

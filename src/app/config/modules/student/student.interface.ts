@@ -22,7 +22,6 @@ export type Localguardian = {
   address: string;
 };
 export type student = {
-  id: string;
   user:Types.ObjectId
   name: username;
   gender: 'male' | 'female'|'other';

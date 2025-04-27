@@ -1,16 +1,14 @@
 import express, { NextFunction, Request, Response } from 'express';
-import { usercontroller } from './user.controller';
+import { usercontroller } from './user.controller'
+import studentvalidationSchema from '../student/student.zod.validation';
+import myarmymiddlware from '../utils/validationrequest';
 
 const userrouter = express.Router();
 
-const myarmymiddlware = (name) => {
-  return async (req: Request, res: Response, next: NextFunction) => {
-    console.log(`khara ami shenabahini amar nam ${name}`);
-    next();
-  };
-};
-
-userrouter.post('/create-student',myarmymiddlware('validaterequst'),usercontroller.createstudent,
+userrouter.post(
+  '/create-student',
+  myarmymiddlware(studentvalidationSchema),
+  usercontroller.createstudent,
 );
 
 export default userrouter;
