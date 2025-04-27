@@ -1,6 +1,4 @@
 import {  Types } from "mongoose";
-
-
 export type username = {
   firstname: string;
   middlename: string;

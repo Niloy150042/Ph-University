@@ -10,7 +10,7 @@ const globalErrorHandler = (
   err: IError,
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ): Response => {
   const statusCode = err.statusCode || 500;
   const message = err.message || 'Something went wrong';
@@ -20,7 +20,6 @@ const globalErrorHandler = (
     message,
     error: {
       message: err.message,
-    
     },
   });
 };
