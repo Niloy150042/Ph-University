@@ -20,7 +20,7 @@ const createstudentintodb = async (student: student, password: string) => {
   );
 
   userdata.id =  await generatestudentid(admissionsemester as Tacademic_semester);
-  console.log(userdata.id);
+
 
   const newuser = await usermodel.create(userdata);
 

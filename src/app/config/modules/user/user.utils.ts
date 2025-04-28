@@ -7,7 +7,7 @@ const laststudentid = async () => {
     .lean()
     .sort({ createdAt: -1 });
 
-  return laststudent?.id ? laststudent.id.substring(6) : undefined;
+  return laststudent?.id ? laststudent.id.slice(-4) : undefined;
 };
 
 export const generatestudentid = async (semester: Tacademic_semester) => {
