@@ -6,6 +6,12 @@ const createsemesterintodb = async (semester: Tacademic_semester) => {
   return result;
 };
 
+const getallsemesterfromdb =async ()=>{
+  const result =await semestermodel.find()
+  return result
+}
+
 export const createsemesters = {
   createsemesterintodb,
+  getallsemesterfromdb
 };

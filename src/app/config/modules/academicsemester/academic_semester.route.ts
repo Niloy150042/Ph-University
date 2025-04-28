@@ -6,4 +6,6 @@ import myarmymiddlware from '../utils/validationrequest'
 const semesterrouter = express.Router()
 semesterrouter.post('/create-academic-semester',myarmymiddlware(academicvalidation.AcademicSemesterZodSchema), semestercontroller.createacademicsemester)
 
+semesterrouter.get('/get-students',semestercontroller.getallsemester)
+
 export default semesterrouter

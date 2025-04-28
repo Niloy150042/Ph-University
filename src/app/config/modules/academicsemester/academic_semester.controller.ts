@@ -14,7 +14,17 @@ const createacademicsemester = asynccatch(
     });
   },
 );
+const getallsemester = asynccatch(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const result = await createsemesters.getallsemesterfromdb();
+    res.status(status.OK).send({
+      success: true,
+      message: 'Academic semester retruved successfully',
+      semester: result,
+    });
+  },
+);
 
 export const semestercontroller = {
-  createacademicsemester,
+  createacademicsemester,getallsemester
 };
