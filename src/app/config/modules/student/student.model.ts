@@ -40,6 +40,10 @@ const studentschema = new Schema<student>({
     required: [true, 'userid is must be required'],
     unique: true,
   },
+  id:{
+    type:String
+  },
+ 
   gender: {
     type: String,
     enum: ['male', 'female', 'other'],

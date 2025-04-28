@@ -8,6 +8,6 @@ semesterrouter.post('/create-academic-semester',myarmymiddlware(academicvalidati
 
 semesterrouter.get('/get-semester',semestercontroller.getallsemester)
 semesterrouter.get('/get-a-semester/:id',semestercontroller.getasinglesemester)
-semesterrouter.patch('/update-a-semester/:id',semestercontroller.updateasinglesemester)
+semesterrouter.patch('/update-a-semester/:id', myarmymiddlware(academicvalidation.updatevalidationacademicsemester),semestercontroller.updateasinglesemester)
 
 export default semesterrouter
