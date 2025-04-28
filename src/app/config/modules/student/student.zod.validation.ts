@@ -46,6 +46,7 @@ const studentvalidationSchema = z.object({
     localguardian: localGuardianSchema,
     profileimage: z.string(),
     isactive: z.enum(['active', 'blocked']).default('active'),
+    admissionsemester:z.string(),
   })
 
   

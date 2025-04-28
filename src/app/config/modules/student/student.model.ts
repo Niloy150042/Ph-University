@@ -30,7 +30,6 @@ const localguardianshcema = new Schema<Localguardian>({
 });
 
 const studentschema = new Schema<student>({
- 
   name: {
     type: nameschema,
     required: [true, 'Student name is required'],
@@ -75,6 +74,10 @@ const studentschema = new Schema<student>({
   guardian: {
     type: guardianschema,
     required: [true, 'Guardian information is required'],
+  },
+  admissionsemester: {
+    type: Schema.Types.ObjectId,
+    ref: 'semestermodel',
   },
   localguardian: {
     type: localguardianshcema,
