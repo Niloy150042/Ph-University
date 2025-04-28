@@ -25,6 +25,39 @@ const getallsemester = asynccatch(
   },
 );
 
+const getasinglesemester = asynccatch(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const result = await createsemesters.getasinglesemesterfromdb();
+    res.status(status.OK).send({
+      success: true,
+      message: `specific semester retruved successfully`,
+      semester: result,
+    });
+  },
+);
+
+const updateasinglesemester = asynccatch(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const id = req.params.id;
+    const updatedata = req.body;
+    console.log(id);
+
+    const result = await createsemesters.updateasinglesemesterfromdb(
+      id,
+      updatedata,
+    );
+
+    res.status(status.OK).send({
+      success: true,
+      message: `specific semester update successfully`,
+      semester: result,
+    });
+  },
+);
+
 export const semestercontroller = {
-  createacademicsemester,getallsemester
+  createacademicsemester,
+  getallsemester,
+  getasinglesemester,
+  updateasinglesemester,
 };
