@@ -1,10 +1,9 @@
 import { z } from 'zod';
 
 export const AcademicSemesterZodSchema = z.object({
-  body: z.object({
-    name: z.enum(['Autum', 'Summer', 'Fall']),
+  name: z.enum(['Autum', 'Summer', 'Fall']),
     code: z.enum(['01', '02', '03']),
-    year: z.date(),
+    year: z.string(),
     startMonth: z.enum(
       [
         'January',
@@ -43,7 +42,6 @@ export const AcademicSemesterZodSchema = z.object({
         required_error: 'end month is required',
       },
     ),
-  }),
 });
 
 export const  academicvalidation ={

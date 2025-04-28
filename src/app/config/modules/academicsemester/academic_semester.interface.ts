@@ -15,7 +15,7 @@ export type TMonth =
 export type Tacademic_semester = {
   name: 'Autum' | 'Summer' | 'Fall';
   code: '01' | '02' | '03';
-  year: Date;
+  year: string;
   startMonth: TMonth;
   endMonth: TMonth;
 };
