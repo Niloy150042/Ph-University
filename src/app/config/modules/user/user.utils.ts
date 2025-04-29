@@ -1,45 +1,37 @@
 import { Tacademic_semester } from '../academicsemester/academic_semester.interface';
 import { user } from '../user.model';
 
-const laststudentid = async () => {
+const laststudentid = async (semester: Tacademic_semester) => {
+  const semesterPrefix = `${semester.year}${semester.code}`; // e.g. 203001
+
   const laststudent = await user
-    .findOne({ role: 'student' })
+    .findOne(
+      {
+        role: 'student',
+        id: { $regex: `^${semesterPrefix}` }, // Only match IDs starting with this semester+code
+      },
+      { id: 1, _id: 0 }
+    )
     .lean()
     .sort({ createdAt: -1 });
-  //2030 01 0001
 
   return laststudent?.id ? laststudent.id : undefined;
 };
+
 export const generatestudentid = async (semester: Tacademic_semester) => {
-  const  currentid = (0).toString().padStart(4,'0')//0000
-  const lastenrlledstudentid = await laststudentid();
+  const currentid = (0).toString().padStart(4, '0'); // 0000
+  const lastenrlledstudentid = await laststudentid(semester);
 
   if (lastenrlledstudentid) {
-    
-    const laststudentsemestercode = lastenrlledstudentid.slice(4, 6);
-    const lastsemesteryear = lastenrlledstudentid.slice(0, 4);
-    if (
-      semester.year == lastsemesteryear &&
-      semester.code == laststudentsemestercode
-    ) {
-      let incrementid = (Number(lastenrlledstudentid.slice(6,10)) + 1).toString().padStart(4, '0')
-     return  incrementid = `${semester.year}${semester.code}${incrementid}`;
-      
-    } 
-    else {
-    
-      const  incrementid = (Number(currentid) + 1).toString().padStart(4, '0');
-      // console.log( (`${semester.year}${semester.code}${incrementid}`)); 
-      return (`${semester.year}${semester.code}${incrementid}`) 
-  
-    }
-  }
-    else {
-    
-    const  incrementid = (Number(currentid) + 1).toString().padStart(4, '0');
-    // console.log( (`${semester.year}${semester.code}${incrementid}`)); 
-    return (`${semester.year}${semester.code}${incrementid}`) 
+    // Same semester, increment the last 4 digits
+    const  incrementid = (Number(lastenrlledstudentid.slice(6, 10)) + 1)
+      .toString()
+      .padStart(4, '0');
 
+    return `${semester.year}${semester.code}${incrementid}`;
+  } else {
+    // No student exists in this semester yet, start from 0001
+    const incrementid = (Number(currentid) + 1).toString().padStart(4, '0');
+    return `${semester.year}${semester.code}${incrementid}`;
   }
- 
 };
