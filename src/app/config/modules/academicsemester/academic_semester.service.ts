@@ -1,4 +1,4 @@
-import { resourceLimits } from 'worker_threads';
+
 import { Tacademic_semester } from './academic_semester.interface';
 import { semestermodel } from './academic_semseter.model';
 import { ObjectId } from 'mongoose';
