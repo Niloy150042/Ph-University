@@ -2,6 +2,7 @@ import experss from 'express';
 import studentrouter from '../modules/student/student.route';
 import userrouter from '../modules/user/user.route';
 import semesterrouter from '../modules/academicsemester/academic_semester.route';
+import facultyrouter from '../modules/academic_faculty/academic_faculty.route';
 
 const router = experss.Router();
 
@@ -18,6 +19,10 @@ const modulerouter = [
     path: '/academic-semesters',
     route: semesterrouter,
   },
+  {
+    path:'/faculty-router',
+    route:facultyrouter
+  }
 ];
 
 modulerouter.forEach(route => router.use(route.path, route.route));
