@@ -8,6 +8,7 @@ const facultyrouter =express.Router()
 facultyrouter.post('/create-academic-faculty',myarmymiddlware(faculty_validation.academic_faculty_validationschema),facultycontroller.createacademicfaculty)
 
 facultyrouter.get('/get-faculties',facultycontroller.getfaculties)
+facultyrouter.get('/get-single-faculty/:id',facultycontroller.getasinglefaculty)
 
 export default facultyrouter
 

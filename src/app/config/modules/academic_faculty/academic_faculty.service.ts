@@ -12,7 +12,13 @@ const getallfaculties = async()=>{
 
 }
 
+const getasinglefaculty =async(id)=>{
+    const result = await faculty_model.findById({_id:id})
+    return result
+}
+
 export const facultyservie = {
   createacademicfacultyintodb,
-  getallfaculties
+  getallfaculties,
+  getasinglefaculty
 };
