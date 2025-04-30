@@ -23,9 +23,11 @@ const getsingledepartment = async (id: string) => {
   return result;
 };
 
-const updateasingledepartment =async(id,payload:Tacademic_department)=>{
-    const result =await department_model.findOneAndUpdate({_id :id},payload,{new:true})
-    return result
+const updateasingledepartment =async(id:string,payload:Tacademic_department)=>{
+    
+        const result =await department_model.findOneAndUpdate({_id :id},payload,{new:true})
+        return result
+    
 
 }
 
