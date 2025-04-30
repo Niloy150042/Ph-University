@@ -7,6 +7,8 @@ const academic_faculty_schema = new Schema<Tacademic_faculty>({
     required: true,
     unique: true,
   },
+} ,{
+    timestamps:true
 });
 
 export const faculty_model = model<Tacademic_faculty>('academicfaculty',academic_faculty_schema)

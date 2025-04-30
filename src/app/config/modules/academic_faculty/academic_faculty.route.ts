@@ -5,7 +5,9 @@ import { facultycontroller } from './academic_faculty.controller'
 
 const facultyrouter =express.Router()
 
-facultyrouter.post('/create-academic-faculty',myarmymiddlware(faculty_validation.academic_faculty_validationschema),  facultycontroller.createacademicfaculty)
+facultyrouter.post('/create-academic-faculty',myarmymiddlware(faculty_validation.academic_faculty_validationschema),facultycontroller.createacademicfaculty)
+
+facultyrouter.get('/get-faculties',facultycontroller.getfaculties)
 
 export default facultyrouter
 
