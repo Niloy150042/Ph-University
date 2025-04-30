@@ -39,7 +39,19 @@ const getasingledepartment = asynccatch(async (req: Request, res: Response) => {
   });
 });
 
+const updatedepartment =asynccatch( async (req:Request,res:Response)=>{
+    const id = req.params.id
+    const payload =req.body
+    const result =  await departmentservice.updateasingledepartment(id,payload)
+    res.status(status.OK).send({
+        success: true,
+        message: `${id} department is updated sucesfully`,
+        department: result,
+      });
+    
+})
+
 export const departmentcontroller = {
   createdepartment,
-  getalldepartment,getasingledepartment
+  getalldepartment,getasingledepartment,updatedepartment
 };

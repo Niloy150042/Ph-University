@@ -23,8 +23,14 @@ const getsingledepartment = async (id: string) => {
   return result;
 };
 
+const updateasingledepartment =async(id,payload:Tacademic_department)=>{
+    const result =await department_model.findOneAndUpdate({_id :id},payload,{new:true})
+    return result
+
+}
+
 export const departmentservice = {
   createdepartmentintodb,
   getalldepartment,
-  getsingledepartment,
+  getsingledepartment,updateasingledepartment
 };
