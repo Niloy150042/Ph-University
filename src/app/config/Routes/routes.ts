@@ -1,11 +1,12 @@
-import experss from 'express';
+import express from 'express';
 import studentrouter from '../modules/student/student.route';
 import userrouter from '../modules/user/user.route';
 import semesterrouter from '../modules/academicsemester/academic_semester.route';
 import facultyrouter from '../modules/academic_faculty/academic_faculty.route';
-import { departmentrouter } from '../modules/academic_department/academic_department.route';
+import departmentrouter from '../modules/academic_department/academic_department.route';
 
-const router = experss.Router();
+
+const router = express.Router();
 
 const modulerouter = [
   {

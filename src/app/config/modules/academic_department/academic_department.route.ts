@@ -1,5 +1,15 @@
-import  express from 'express'
+import express  from 'express'
+import myarmymiddlware from '../utils/validationrequest'
 
- export  const departmentrouter = express.Router()
+import { departmentcontroller } from './academic_department.controller'
+import { academic_department_validation } from './academic_department.validation'
 
-departmentrouter.post('/create-department')
+const departmentrouter = express.Router()
+
+departmentrouter.post('/create-department',myarmymiddlware(academic_department_validation),departmentcontroller.createdepartment)
+
+
+departmentrouter.get('/get-departments',departmentcontroller.getalldepartment)
+departmentrouter.get('/get-singledepartment/:id',departmentcontroller.getasingledepartment)
+
+export default departmentrouter

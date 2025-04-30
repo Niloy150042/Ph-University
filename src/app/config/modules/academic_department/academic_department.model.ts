@@ -3,8 +3,9 @@ import { Tacademic_department } from "./academic_department.interface";
 
  const academic_department_model = new Schema<Tacademic_department>({
     name:{
-        Type:String,
-        required:true
+        type:String,
+        required:true,
+        unique:true
     },
     academic_faculty:{
         type:Schema.Types.ObjectId,
