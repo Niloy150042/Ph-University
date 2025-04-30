@@ -9,6 +9,7 @@ facultyrouter.post('/create-academic-faculty',myarmymiddlware(faculty_validation
 
 facultyrouter.get('/get-faculties',facultycontroller.getfaculties)
 facultyrouter.get('/get-single-faculty/:id',facultycontroller.getasinglefaculty)
+facultyrouter.put('/update-single-faculty/:id',facultycontroller.updateasinglefaculty)
 
 export default facultyrouter
 

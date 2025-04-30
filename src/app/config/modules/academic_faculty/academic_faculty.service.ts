@@ -12,13 +12,19 @@ const getallfaculties = async()=>{
 
 }
 
-const getasinglefaculty =async(id)=>{
+const getasinglefaculty =async(id:string)=>{
     const result = await faculty_model.findById({_id:id})
     return result
+}
+
+const updatesinglefaculty =async(id:string ,  payload: Partial<Tacademic_faculty>)=>{
+   
+    const result =faculty_model.findOneAndUpdate({_id:id} ,payload,{new:true})
+    return result 
 }
 
 export const facultyservie = {
   createacademicfacultyintodb,
   getallfaculties,
-  getasinglefaculty
+  getasinglefaculty,updatesinglefaculty
 };

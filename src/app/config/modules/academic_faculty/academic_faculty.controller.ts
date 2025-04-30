@@ -24,20 +24,33 @@ const getfaculties = asynccatch(async (req: Request, res: Response) => {
   });
 });
 
-const getasinglefaculty =asynccatch( async (req:Request,res:Response)=>{
-  const {id} = req.params 
-  const result =await facultyservie.getasinglefaculty(id)
+const getasinglefaculty = asynccatch(async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const result = await facultyservie.getasinglefaculty(id);
 
   res.status(status.OK).send({
     success: true,
     message: ` ${id} faculty is  retrived successfully`,
     faculties: result,
   });
-  
+});
 
-})
+const updateasinglefaculty = asynccatch(async (req: Request, res: Response) => {
+  const { id } = req.params;
+  console.log(id);
+  const payload = req.body;
+  const result = await facultyservie.updatesinglefaculty(id, payload);
+
+  res.status(status.OK).send({
+    success: true,
+    message: ` ${id} faculty is  updated  successfully`,
+    faculties: result,
+  });
+});
 
 export const facultycontroller = {
   createacademicfaculty,
-  getfaculties,getasinglefaculty
+  getfaculties,
+  getasinglefaculty,
+  updateasinglefaculty,
 };
