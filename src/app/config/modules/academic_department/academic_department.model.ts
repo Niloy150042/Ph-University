@@ -10,6 +10,8 @@ import { Tacademic_department } from "./academic_department.interface";
         type:Schema.Types.ObjectId,
         ref:'faculty_model' // referencing faculty model 
     }
+} ,{
+    timestamps:true
 })
 
 export const department_model =   model <Tacademic_department>('academic_department',academic_department_model)
