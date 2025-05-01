@@ -8,7 +8,12 @@ const createstudentintodb = async (student:student)=>{
 }
 
 const getallstudentfromdb = async()=>{
-    const result = await studentmodel.find().populate('admissionsemester').populate('academicdepartment')
+    const result = await studentmodel.find().populate('admissionsemester').populate({
+        path:'academicdepartment',
+        populate:{
+            path:'academic_faculty'
+        }
+    })
     return result
 }
 

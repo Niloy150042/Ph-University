@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import { Tacademic_semester } from '../academicsemester/academic_semester.interface';
 import { semestermodel } from '../academicsemester/academic_semseter.model';
 import { student } from '../student/student.interface';
@@ -19,18 +20,36 @@ const createstudentintodb = async (student: student, password: string) => {
     student.admissionsemester,
   );
 
-  userdata.id =  await generatestudentid(admissionsemester as Tacademic_semester);
+  // creating transaction and rollback
 
+  const session = await mongoose.startSession();
 
-  const newuser = await usermodel.create(userdata);
+  try {
+    session.startTransaction();
+    userdata.id = await generatestudentid(
+      admissionsemester as Tacademic_semester,
+    );
+    // starting transaction 1
+    const newuser = await usermodel.create([userdata], { session });
+    if (!newuser) {
+      throw new Error('user is not created successflly');
+    }
+    student.id = newuser[0].id;
+    student.user = newuser[0]._id;
+    // starting second transaction
+    const newstudent = await studentmodel.create([student], { session });
+    if (!newstudent) {
+      throw new Error('student is not created successflly');
+    }
+    session.commitTransaction();
+    session.endSession();
+    return newstudent;
+  } catch (err){
+    session.abortTransaction();
+    session.endSession();
+  }
 
   //   create a student
-  if (Object.keys(newuser).length) {
-    student.id = newuser.id;
-    student.user = newuser._id;
-    const newstudent = await studentmodel.create(student);
-    return newstudent;
-  }
 };
 export const userservice = {
   createstudentintodb,
