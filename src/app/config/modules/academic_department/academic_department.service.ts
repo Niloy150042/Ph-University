@@ -6,7 +6,7 @@ const createdepartmentintodb = async (
   departmentname: string,
 ) => {
   const isExist = await department_model.findOne({ name: departmentname });
- 
+
   if (isExist) {
     throw new Error('Department name must be unique');
   } else {
@@ -14,25 +14,29 @@ const createdepartmentintodb = async (
     return result;
   }
 };
-const getalldepartment = async () => {
-  const result = await department_model.find();
-  return result;
-};
 const getsingledepartment = async (id: string) => {
-  const result = await department_model.findById({ _id: id });
+  const result = await department_model.findById({ _id: id }).populate('academic_faculty')
   return result;
 };
+const getalldepartment = async () => {
+    const result = await department_model.find().populate('academic_faculty')
+    return result;
+  };
 
-const updateasingledepartment =async(id:string,payload:Tacademic_department)=>{
-    
-        const result =await department_model.findOneAndUpdate({_id :id},payload,{new:true})
-        return result
-    
-
-}
+const updateasingledepartment = async (
+  id: string,
+  payload: Tacademic_department,
+) => {
+  const result = await department_model.findOneAndUpdate({ _id: id }, payload, {
+    new: true,
+  });
+  
+  return result;
+};
 
 export const departmentservice = {
   createdepartmentintodb,
   getalldepartment,
-  getsingledepartment,updateasingledepartment
+  getsingledepartment,
+  updateasingledepartment,
 };

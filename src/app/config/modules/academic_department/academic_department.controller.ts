@@ -21,7 +21,7 @@ const createdepartment = asynccatch(async (req: Request, res: Response) => {
 });
 
 const getalldepartment = asynccatch(async (req: Request, res: Response) => {
-  const result = await department_model.find();
+  const result = await department_model.find().populate('academic_faculty');
   res.status(status.OK).send({
     success: true,
     message: 'all department are retrived successfully',

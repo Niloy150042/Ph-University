@@ -1,4 +1,4 @@
-import { model, Schema } from "mongoose";
+import mongoose, { model, Schema } from "mongoose";
 import { Tacademic_department } from "./academic_department.interface";
 
  const academic_department_model = new Schema<Tacademic_department>({
@@ -8,11 +8,12 @@ import { Tacademic_department } from "./academic_department.interface";
         unique:true
     },
     academic_faculty:{
-        type:Schema.Types.ObjectId,
-        ref:'faculty_model' // referencing faculty model 
+        type: mongoose.Schema.Types.ObjectId,
+        ref:'academicfaculty', // jei name e save ase faculty database e   ,
+        required:true
     }
 } ,{
     timestamps:true
 })
 
-export const department_model =   model <Tacademic_department>('academic_department',academic_department_model)
+export const department_model = model <Tacademic_department>('academic_department',academic_department_model)

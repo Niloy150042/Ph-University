@@ -8,13 +8,12 @@ const createstudentintodb = async (student:student)=>{
 }
 
 const getallstudentfromdb = async()=>{
-    const result = await studentmodel.find()
+    const result = await studentmodel.find().populate('admissionsemester').populate('academicdepartment')
     return result
-
 }
 
 const getasinglestudent =async(id)=>{
-    const result =await studentmodel.findOne({id})
+    const result =await studentmodel.findOne({_id:id})
     return result
 }
 

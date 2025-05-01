@@ -79,10 +79,12 @@ const studentschema = new Schema<student>({
     type: guardianschema,
     required: [true, 'Guardian information is required'],
   },
+
   admissionsemester: {
     type: Schema.Types.ObjectId,
-    ref: 'semestermodel',
+    ref: 'semester',
   },
+
   localguardian: {
     type: localguardianshcema,
     required: [true, 'Local guardian information is required'],
@@ -90,6 +92,13 @@ const studentschema = new Schema<student>({
   profileimage: {
     type: String,
   },
+
+  academicdepartment:{
+    type:Schema.Types.ObjectId,
+    ref:'academic_department',
+    required:true
+  }
+  
 });
 
 export const studentmodel = model<student>('student', studentschema);
