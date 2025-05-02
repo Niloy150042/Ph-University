@@ -47,6 +47,7 @@ const createstudentintodb = async (student: student, password: string) => {
   } catch (err){
     session.abortTransaction();
     session.endSession();
+    throw new Error(`transaction is aborted ${err}`)
   }
 
   //   create a student
