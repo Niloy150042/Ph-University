@@ -5,7 +5,7 @@ import {
   student,
   username,
 } from './student.interface';
-import bcrypt from 'bcrypt';
+
 
 const nameschema = new Schema<username>({
   firstname: { type: String, required: true },
@@ -97,6 +97,10 @@ const studentschema = new Schema<student>({
     type:Schema.Types.ObjectId,
     ref:'academic_department',
     required:true
+  },
+  isdeleted:{
+    type:Boolean,
+    default:false
   }
   
 });

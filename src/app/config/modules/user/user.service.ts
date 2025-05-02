@@ -35,7 +35,7 @@ const createstudentintodb = async (student: student, password: string) => {
       throw new Error('user is not created successflly');
     }
     student.id = newuser[0].id;
-    student.user = newuser[0]._id;
+    student.user = newuser[0].id;
     // starting second transaction
     const newstudent = await studentmodel.create([student], { session });
     if (!newstudent) {
@@ -44,14 +44,52 @@ const createstudentintodb = async (student: student, password: string) => {
     session.commitTransaction();
     session.endSession();
     return newstudent;
-  } catch (err){
-    session.abortTransaction();
+  } catch (err) {
     session.endSession();
-    throw new Error(`transaction is aborted ${err}`)
+    throw new Error(`transaction is aborted ${err}`);
   }
-
   //   create a student
 };
+
+const deleteuserfromdb = async (id:string) => {
+  // session initialization
+  const session = await mongoose.startSession();
+ try {
+    session.startTransaction();
+    const deleteuser = await usermodel.findOneAndUpdate(
+      {id:Number(id)},
+     {$set:{isdeleted:true}},
+      {new:true, session},    
+    );
+
+
+
+    if (!deleteuser) {
+      throw new Error('user is not deleted ');
+    }
+
+    const deletestudent = await studentmodel.findOneAndUpdate(
+      { id:Number(id) },
+      {$set:{isdeleted:true}},
+      { new:true, session },
+    );
+  
+    if (!deletestudent) {
+      throw new Error('student is not deleted');
+    }
+    await session.commitTransaction();
+    await session.endSession();
+  return deletestudent
+    
+  } catch (err) {
+    if (session.inTransaction()) {
+      await session.abortTransaction(); // ✅ Abort only if session is still active
+    }
+    session.endSession();
+  }
+};
+
 export const userservice = {
   createstudentintodb,
+  deleteuserfromdb,
 };

@@ -11,4 +11,6 @@ userrouter.post(
   usercontroller.createstudent,
 );
 
+userrouter.patch('/delete-student/:id',usercontroller.deletestudent)
+
 export default userrouter;

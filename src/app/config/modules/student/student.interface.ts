@@ -38,7 +38,8 @@ export type student = {
   localguardian: Localguardian;
   profileimage?: string;
   admissionsemester:Types.ObjectId;
-  academicdepartment:Types.ObjectId
+  academicdepartment:Types.ObjectId;
+  isdeleted:boolean
 
   
 };
