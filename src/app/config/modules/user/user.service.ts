@@ -61,9 +61,6 @@ const deleteuserfromdb = async (id:string) => {
      {$set:{isdeleted:true}},
       {new:true, session},    
     );
-
-
-
     if (!deleteuser) {
       throw new Error('user is not deleted ');
     }

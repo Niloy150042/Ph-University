@@ -18,7 +18,7 @@ const getasinglefaculty =async(id:string)=>{
 }
 
 const updatesinglefaculty =async(id:string ,  payload: Partial<Tacademic_faculty>)=>{
-   
+
     const result =faculty_model.findOneAndUpdate({_id:id} ,payload,{new:true})
     return result 
 }

@@ -26,13 +26,16 @@ const createstudent = asynccatch (async (req, res) => {
 const deletestudent = asynccatch(async (req, res) => {
   const id = req.params.id
   const result = await userservice.deleteuserfromdb(id);
+ if(result){
   res.status(status.OK).send({
     success:true,
     message:'user and student deleted successfuly',
     data:result 
   })
-
-  
+ }
+ else{
+  throw new Error('data is not deleted')
+ }
 });
 
 
