@@ -4,15 +4,11 @@ import { ZodError } from 'zod';
 import { TerrorSource } from './errortype';
 import { zoderrorhandler } from '../../../../custommadeerror.ts/handlezoderror';
 import { handlemongooseerror } from '../../../../custommadeerror.ts/hanldemongooseerror';
-
-
-
 // Correctly extending the built-in Error object
 interface IError extends Error {
   statusCode?: number;
   stack?: string;
 }
-
 const globalErrorHandler = (
   err: IError,
   req: Request,
@@ -24,15 +20,13 @@ const globalErrorHandler = (
   let message = err.message || 'Something went wrong';
  // our custom made mongoose error is below 
 
-
-
-
   let errorsources: TerrorSource = [
     {
       path: '',
       message: 'Something went wrong',
     },
   ];
+
   
  // our custom made zoderror is making below 
   if (err instanceof ZodError) {
@@ -41,7 +35,6 @@ const globalErrorHandler = (
       (message = simplifiederror?.message),
       (errorsources = simplifiederror?.errorsources);
   }
-
   else if (err.name=='ValidationError'){
     const simplifiedmongooseerror = handlemongooseerror(err)
     statusCode = simplifiedmongooseerror.statusCode,
@@ -49,12 +42,16 @@ const globalErrorHandler = (
     errorsources=simplifiedmongooseerror.erorsources
      
   }
-  return res.status(statusCode).json({
+ 
+
+  
+  return  res.status(statusCode).json({
     success: false,
     message,
     errorsources,
-    stack:process.env.NODE_ENV=="development"?err.stack:null 
+    stack:process.env.NODE_ENV == "development"? err.stack : null 
   });
 };
 
-export default globalErrorHandler;
+export default  globalErrorHandler
+
