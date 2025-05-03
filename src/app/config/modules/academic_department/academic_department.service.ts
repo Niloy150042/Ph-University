@@ -8,7 +8,7 @@ const createdepartmentintodb = async (
   const isExist = await department_model.findOne({ name: departmentname });
 
   if (isExist) {
-    throw new Error('Department name must be unique');
+    throw new Error('Department already exists in db');
   } else {
     const result = await department_model.create(department);
     return result;

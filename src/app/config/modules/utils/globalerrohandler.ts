@@ -1,4 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 import { NextFunction, Request, Response } from 'express';
+import { ZodError } from 'zod';
+import { TerrorSource } from './errortype';
 
 // Correctly extending the built-in Error object
 interface IError extends Error {
@@ -12,17 +15,25 @@ const globalErrorHandler = (
   res: Response,
   next: NextFunction,
 ): Response => {
-  
-  const statusCode = err.statusCode || 500;
-  const message = err.message || 'Something went wrong';
+  let statusCode = err.statusCode || 500;
+  let message = err.message || 'Something went wrong';
+
+  const errorsources: TerrorSource = [
+    {
+      path: '',
+      message: 'Something went wrong',
+    },
+  ];
+
+  if (err instanceof ZodError) {
+    message;
+  }
 
   return res.status(statusCode).json({
     success: false,
     message,
-    error: {
-      message: err.message,
-    },
+    errorsources,
+    error: err,
   });
 };
-
 export default globalErrorHandler;

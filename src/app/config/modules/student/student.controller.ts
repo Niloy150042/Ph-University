@@ -1,5 +1,7 @@
 import { studentservices } from './student.servive';
 import catchasync from '../utils/catchasync'
+import globalErrorHandler from '../utils/globalerrohandler';
+import { NextFunction } from 'express';
 
 //assigning higher order function 
 
@@ -28,7 +30,7 @@ const getallstudent = catchasync(async (req, res, next) => {
     });
   
 })
-const getasinglestudentdata = catchasync(async (req, res, next) => {
+const getasinglestudentdata = catchasync(async (req, res, next:NextFunction) => {
   
     const { studentid } = req.params;
     const result = await studentservices.getasinglestudent(studentid);
@@ -36,6 +38,7 @@ const getasinglestudentdata = catchasync(async (req, res, next) => {
       success: true,
       data: result,
     });
+    next(globalErrorHandler)
    
 })
 
