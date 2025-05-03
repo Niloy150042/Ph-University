@@ -2,7 +2,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { ZodError } from 'zod';
 import { TerrorSource } from './errortype';
-import { zoderrorhandler } from './custommadingerror';
+import { zoderrorhandler } from '../../../../custommadeerror.ts/handlezoderror';
 
 // Correctly extending the built-in Error object
 interface IError extends Error {
@@ -26,7 +26,7 @@ const globalErrorHandler = (
       message: 'Something went wrong',
     },
   ];
-  
+
  // our custom made error is making below 
   if (err instanceof ZodError) {
     const simplifiederror = zoderrorhandler(err);
