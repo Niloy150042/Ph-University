@@ -18,22 +18,42 @@ const globalErrorHandler = (
   let statusCode = err.statusCode || 500;
   let message = err.message || 'Something went wrong';
 
-  const errorsources: TerrorSource = [
+  let errorsources: TerrorSource = [
     {
       path: '',
       message: 'Something went wrong',
     },
   ];
 
+  const zoderrorhandler = (err: ZodError) => {
+    const errorsources = err.issues.map(issue => {
+      return {
+        path: issue?.path[issue.path.length - 1],
+        message: issue.message,
+      };
+    });
+    const statusCode = 400;
+    const message = 'validation error';
+
+    return {
+      statusCode,
+      message,
+      errorsources,
+    };
+  };
+
   if (err instanceof ZodError) {
-    message;
+    const simplifiederror = zoderrorhandler(err);
+    (statusCode = simplifiederror?.statusCode),
+      (message = simplifiederror?.message),
+      (errorsources = simplifiederror?.errorsources);
   }
 
   return res.status(statusCode).json({
     success: false,
     message,
     errorsources,
-    error: err,
+    stack:process.env.NODE_ENV=="development"?err.stack:null 
   });
 };
 export default globalErrorHandler;
