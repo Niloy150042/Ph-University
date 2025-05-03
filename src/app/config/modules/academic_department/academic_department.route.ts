@@ -8,7 +8,7 @@ const departmentrouter = express.Router();
 
 departmentrouter.post(
   '/create-department',
-  myarmymiddlware(academic_department_validation),
+  // myarmymiddlware(academic_department_validation),
   departmentcontroller.createdepartment,
 );
 

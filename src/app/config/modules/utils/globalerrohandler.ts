@@ -3,6 +3,9 @@ import { NextFunction, Request, Response } from 'express';
 import { ZodError } from 'zod';
 import { TerrorSource } from './errortype';
 import { zoderrorhandler } from '../../../../custommadeerror.ts/handlezoderror';
+import { handlemongooseerror } from '../../../../custommadeerror.ts/hanldemongooseerror';
+
+
 
 // Correctly extending the built-in Error object
 interface IError extends Error {
@@ -19,6 +22,10 @@ const globalErrorHandler = (
 ): Response => {
   let statusCode = err.statusCode || 500;
   let message = err.message || 'Something went wrong';
+ // our custom made mongoose error is below 
+
+
+
 
   let errorsources: TerrorSource = [
     {
@@ -26,8 +33,8 @@ const globalErrorHandler = (
       message: 'Something went wrong',
     },
   ];
-
- // our custom made error is making below 
+  
+ // our custom made zoderror is making below 
   if (err instanceof ZodError) {
     const simplifiederror = zoderrorhandler(err);
     (statusCode = simplifiederror?.statusCode),
@@ -35,6 +42,13 @@ const globalErrorHandler = (
       (errorsources = simplifiederror?.errorsources);
   }
 
+  else if (err.name=='ValidationError'){
+    const simplifiedmongooseerror = handlemongooseerror(err)
+    statusCode = simplifiedmongooseerror.statusCode,
+    message =simplifiedmongooseerror.message
+    errorsources=simplifiedmongooseerror.erorsources
+     
+  }
   return res.status(statusCode).json({
     success: false,
     message,
