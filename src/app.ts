@@ -9,17 +9,23 @@ import globalErrorHandler from './app/config/modules/utils/globalerrohandler';
 import notfound from './app/config/modules/utils/notfound';
 import router from './app/config/Routes/routes';
 
+
 const app: Application = express();
 
 app.use(express.json());
 app.use(cors());
 
-app.use('/api/v1', router);
+app.use('/api/v1', router)
 
-app.get('/', (req: Request, res: Response) => {
-  res.send('hello world');
-});
+app.get('/test', async(req:Request,res:Response)=>{
 
+  // const a = 10
+  // res.send(`${a}`)
+})
+
+app.get('/',(req,res)=>{
+  res.send('hello dev niloy ')
+})
 app.use(
   globalErrorHandler as (
     err: Error,
