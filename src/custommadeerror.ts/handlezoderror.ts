@@ -1,7 +1,8 @@
 import { ZodError } from "zod";
+import { TGerrorresponse } from "../app/config/modules/utils/errortype";
 
- export const zoderrorhandler = (err: ZodError) => {
-    const errorsources = err.issues.map(issue => {
+ export const zoderrorhandler = (err: ZodError):TGerrorresponse => {
+    const errorsource = err.issues.map(issue => {
       return {
         path: issue?.path[issue.path.length-1],
         message: issue.message,
@@ -12,7 +13,7 @@ import { ZodError } from "zod";
     return {
       statusCode,
       message,
-      errorsources,
+      errorsource,
      
     };
   };

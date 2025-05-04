@@ -33,13 +33,13 @@ const globalErrorHandler = (
     const simplifiederror = zoderrorhandler(err);
     (statusCode = simplifiederror?.statusCode),
       (message = simplifiederror?.message),
-      (errorsources = simplifiederror?.errorsources);
+      (errorsources = simplifiederror?.errorsource);
   }
   else if (err.name=='ValidationError'){
     const simplifiedmongooseerror = handlemongooseerror(err)
     statusCode = simplifiedmongooseerror.statusCode,
     message =simplifiedmongooseerror.message
-    errorsources=simplifiedmongooseerror.erorsources
+    errorsources=simplifiedmongooseerror.errorsource
      
   }
  
