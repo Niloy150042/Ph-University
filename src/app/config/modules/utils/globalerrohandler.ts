@@ -4,6 +4,7 @@ import { ZodError } from 'zod';
 import { TerrorSource } from './errortype';
 import { zoderrorhandler } from '../../../../custommadeerror.ts/handlezoderror';
 import { handlemongooseerror } from '../../../../custommadeerror.ts/hanldemongooseerror';
+import { handlecasterror } from '../../../../custommadeerror.ts/handlecasterror';
 // Correctly extending the built-in Error object
 interface IError extends Error {
   statusCode?: number;
@@ -42,13 +43,18 @@ const globalErrorHandler = (
     errorsources=simplifiedmongooseerror.errorsource
      
   }
- 
-
-  
+  else if (err.name == 'CastError'){
+    const simplifiedcasteror = handlecasterror(err)
+    statusCode = simplifiedcasteror.statuscode
+    message=simplifiedcasteror.message,
+    errorsources=simplifiedcasteror.errorsource
+    
+  }
   return  res.status(statusCode).json({
     success: false,
     message,
     errorsources,
+    err,
     stack:process.env.NODE_ENV == "development"? err.stack : null 
   });
 };
