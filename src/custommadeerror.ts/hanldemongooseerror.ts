@@ -4,7 +4,7 @@ import { TGerrorresponse } from '../app/config/modules/utils/errortype';
 export const handlemongooseerror = (err): TGerrorresponse => {
   const errorsource = err.errors.name.message;
   const statusCode = 400;
-  const message = 'validation failed ';
+  const message = 'invalid id ';
   return {
     statusCode,
     message,

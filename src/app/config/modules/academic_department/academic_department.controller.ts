@@ -3,7 +3,7 @@ import asynccatch from '../utils/catchasync';
 import { departmentservice } from './academic_department.service';
 import status from 'http-status';
 import { department_model } from './academic_department.model';
-import { studentservices } from '../student/student.servive';
+
 
 const createdepartment = asynccatch(async (req: Request, res: Response) => {
   const department = req.body;
