@@ -35,7 +35,7 @@ const createstudentintodb = async (student: student, password: string) => {
       throw new Error('user is not created successflly');
     }
     student.id = newuser[0].id;
-    student.user = newuser[0].id;
+    student.user = newuser[0]._id;
     // starting second transaction
     const newstudent = await studentmodel.create([student], { session });
     if (!newstudent) {
