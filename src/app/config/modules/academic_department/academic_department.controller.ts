@@ -30,7 +30,8 @@ const getalldepartment = asynccatch(async (req: Request, res: Response) => {
 });
 
 const getasingledepartment = asynccatch(async (req: Request, res: Response) => {
-  const id = req.params.id;
+  const id = req.params
+  console.log(id);
   const result = await departmentservice.getsingledepartment(id);
   res.status(status.OK).send({
     success: true,
