@@ -4,6 +4,8 @@ const createstudentintodb = async (student:student)=>{
      const result = await studentmodel.create(student) // mongoose built in static method
      return result
 }
+
+const studentsearchablefield =['email', 'name.firstname','name.lastname','gender','avatar','bloodgroup','persentaddress']
 const getallstudentfromdb = async(query)=>{
     let  searchterm =''
     if(query.SearchTerm){
@@ -12,7 +14,7 @@ const getallstudentfromdb = async(query)=>{
     const result = await studentmodel.find(
 
         {
-            $or:['email', 'name.firstname','name.lastname','gender','avatar','bloodgroup','persentaddress'].map((field)=>({
+            $or:studentsearchablefield.map((field)=>({
                 [field]:{$regex:searchterm , $options: 'i'}
             }))
         }
