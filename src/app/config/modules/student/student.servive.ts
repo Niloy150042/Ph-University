@@ -22,7 +22,7 @@ const getallstudentfromdb = async(query)=>{
             }))
         }
     )
-    const removefields = ['SearchTerm','sort','limit']
+    const removefields = ['SearchTerm','sort','limit','page']
     // console.log(removefields);
     removefields.forEach((el)=>delete queryobj[el]);
     console.log(query);
@@ -36,17 +36,26 @@ const getallstudentfromdb = async(query)=>{
     })
 
  let sort = 'createdAt'
+
  if (query.sort){
     sort=query.sort
     console.log(sort); 
  }
-const sortquery = filterquery.sort(sort)
-
-let limit =1
+ let limit =1
 if(query.limit){
-    limit = query.limit 
+    limit = Number(query.limit )
 }
-const limitquery =  await sortquery.limit(limit)
+ let page =1 
+ let skip =0
+
+ if(query.page){
+    page=Number(query.page,)
+    skip = (page-1)*limit
+ }
+const sortquery = filterquery.sort(sort)
+const paginatedquery = sortquery.skip(skip)
+
+const limitquery =  await paginatedquery.limit(limit)
     return limitquery
 
 }
