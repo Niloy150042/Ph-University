@@ -6,25 +6,27 @@ const createstudentintodb = async (student:student)=>{
 }
 const getallstudentfromdb = async(query)=>{
     const queryobj = {...query}
-
+//  console.log(queryobj);
+//   console.log(query);
     let  searchterm =''
     if(query.SearchTerm){
         searchterm=query.SearchTerm
     }
+    // console.log(searchterm);
+
   const studentsearchablefield =['email', 'name.firstname','name.lastname','gender','avatar','bloodgroup','persentaddress']
-
-    const searchquery =studentmodel.find(
-
+   const searchquery =studentmodel.find(
         {
             $or:studentsearchablefield.map((field)=>({
                 [field]:{$regex:searchterm , $options: 'i'}
             }))
         }
-
     )
-    const removefields = ['searchterm']
-    removefields.forEach((el)=>delete queryobj[el])
-    
+    const removefields = ['SearchTerm']
+    // console.log(removefields);
+    removefields.forEach((el)=>delete queryobj[el]);
+    // console.log(query);
+    // console.log(queryobj);
 
     const result = await searchquery.find(queryobj) .populate('admissionsemester').populate({
         path:'academicdepartment',
