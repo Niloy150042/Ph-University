@@ -22,20 +22,35 @@ const getallstudentfromdb = async(query)=>{
             }))
         }
     )
-    const removefields = ['SearchTerm']
+    const removefields = ['SearchTerm','sort','limit']
     // console.log(removefields);
     removefields.forEach((el)=>delete queryobj[el]);
-    // console.log(query);
-    // console.log(queryobj);
+    console.log(query);
+    console.log(queryobj);
 
-    const result = await searchquery.find(queryobj) .populate('admissionsemester').populate({
+    const filterquery  =  searchquery.find(queryobj) .populate('admissionsemester').populate({
         path:'academicdepartment',
         populate:{
             path:'academic_faculty'
         }
     })
-    return result
+
+ let sort = 'createdAt'
+ if (query.sort){
+    sort=query.sort
+    console.log(sort); 
+ }
+const sortquery = filterquery.sort(sort)
+
+let limit =1
+if(query.limit){
+    limit = query.limit 
 }
+const limitquery =  await sortquery.limit(limit)
+    return limitquery
+
+}
+
 const getasinglestudent =async(id)=>{
     const result =await studentmodel.findOne({_id:id})
     return result
