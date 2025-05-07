@@ -26,6 +26,7 @@ const createstudentintodb = async (student: student, password: string) => {
 
   try {
     session.startTransaction();
+
     userdata.id = await generatestudentid(
       admissionsemester as Tacademic_semester,
     );

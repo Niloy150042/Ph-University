@@ -31,7 +31,7 @@ export const generatestudentid = async (semester: Tacademic_semester) => {
     return `${semester.year}${semester.code}${incrementid}`;
   } else {
     // No student exists in this semester yet, start from 0001
-    const incrementid = (Number(currentid) + 1).toString().padStart(4, '0');
+    const incrementid = (Number(currentid) + 1).toString().padStart(4,'0');
     return `${semester.year}${semester.code}${incrementid}`;
   }
 };

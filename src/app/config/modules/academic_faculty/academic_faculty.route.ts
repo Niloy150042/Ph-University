@@ -12,6 +12,7 @@ facultyrouter.post(
 );
 
 facultyrouter.get('/get-faculties', facultycontroller.getfaculties);
+
 facultyrouter.get(
   '/get-single-faculty/:id',
   facultycontroller.getasinglefaculty,
