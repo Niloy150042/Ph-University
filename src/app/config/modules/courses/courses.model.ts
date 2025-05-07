@@ -9,7 +9,6 @@ const prequisitecoursesschema = new Schema<Tprerequisitecourse>({
   isdeleted: {
     type: Boolean,
     default: false,
-
   },
 });
 const coursemodel = new Schema<Tcourses>({
@@ -36,6 +35,7 @@ const coursemodel = new Schema<Tcourses>({
   },
   isdeleted: {
     type: Boolean,
+    default:false
   },
   preRequisitecourse: [prequisitecoursesschema],
   

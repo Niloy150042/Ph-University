@@ -11,15 +11,17 @@ const getallcourses = async()=>{
     return result
 }
 const getasinglecourse = async(id)=>{
-    const result = await course.findById(id)
+    const result = await course.findById(id).populate('preRequisitecourse.course')
     return result 
 }
-const updatesinglecourse = async( id ,payload)=>{
-    const result = await course.findByIdAndUpdate({id} , payload ,{new:true})
-    return result 
+const updatesinglecourse = async( id ,payload :Partial<Tcourses>)=>{
+    const {preRequisitecourse , ...courseremainingdata} =payload
+    const updatebasicourseinfo= await course.findByIdAndUpdate({_id:id},courseremainingdata ,{new:true} )
+    return updatebasicourseinfo
 }
+
 const deletecourse = async(id)=>{
-    const result = await course.findOneAndUpdate({id},{isdeleted:true},{new:true})
+    const result = await course.findOneAndUpdate({_id:id},{isdeleted:true},{new:true})
     return result
 }
 export const courseservices = {

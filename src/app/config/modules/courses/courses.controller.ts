@@ -22,9 +22,9 @@ const findallcourse = asynccatch( async(req: Request, res: Response, next) => {
   });
 });
 
-const getasinglecourse = asynccatch((req: Request, res: Response, next) => {
+const getasinglecourse = asynccatch(async (req: Request, res: Response, next) => {
   const id = req.params.id;
-  const result = courseservices.getasinglecourse(id);
+  const result = await courseservices.getasinglecourse(id);
   res.status(status.OK).send({
     success: true,
     message: 'your course retrived successfully ',
@@ -32,10 +32,10 @@ const getasinglecourse = asynccatch((req: Request, res: Response, next) => {
   });
 });
 
-const updatecourse = asynccatch((req: Request, res: Response, next) => {
+const updatecourse = asynccatch(async (req: Request, res: Response, next) => {
   const id = req.params.id;
-  const payload = req.query;
-  const result = courseservices.updatesinglecourse(id, payload);
+  const payload = req.body;
+  const result = await courseservices.updatesinglecourse(id, payload);
   res.status(status.OK).send({
     success: true,
     message: 'course updated successfully ',
@@ -43,9 +43,9 @@ const updatecourse = asynccatch((req: Request, res: Response, next) => {
   });
 });
 
-const deletecourse = asynccatch((req: Request, res: Response, next) => {
+const deletecourse = asynccatch(async(req: Request, res: Response, next) => {
   const id = req.params.id;
-  const result = courseservices.deletecourse(id);
+  const result = await courseservices.deletecourse(id);
   res.status(status.OK).send({
     success: true,
     message: 'course deleted successfully ',

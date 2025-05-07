@@ -16,4 +16,6 @@ export const coursevalidationshcema = z.object({
   preRequisitecourse: z.array(prerequisiteCoursevalidationSchema).optional(),
 });
 
-export default coursevalidationshcema
+const updatevalidationschema = coursevalidationshcema.partial()
+
+export default updatevalidationschema
