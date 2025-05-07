@@ -25,11 +25,13 @@ const updatesinglecourse = async (id, payload: Partial<Tcourses>) => {
   );
 
   if (preRequisitecourse && preRequisitecourse.length > 0) {
+
     const deleteprerequisitecourse = preRequisitecourse
       ?.filter(el => el.course && el.isdeleted)
       .map(el => el.course);
 
     const updateprereqquisitecoursefromdb = await course.findByIdAndUpdate(
+        
       { _id: id },
       {
         $pull: {
@@ -43,10 +45,12 @@ const updatesinglecourse = async (id, payload: Partial<Tcourses>) => {
     const addprerequisitecourse = preRequisitecourse.filter(
       el => el.course && !el.isdeleted,
     );
+    console.log(addprerequisitecourse);
 
     // Get the updated course's current prerequisites
     const updatedCourse = await course.findById(id);
     const existingCourses = updatedCourse?.preRequisitecourse || [];
+    console.log(existingCourses);
 
     // Step 4: Check if any course to add already exists
     const isDuplicate = addprerequisitecourse.some(item =>
@@ -62,6 +66,7 @@ const updatesinglecourse = async (id, payload: Partial<Tcourses>) => {
     }
 
     // Step 5: If no duplicate, add new prerequisite courses
+
     await course.findByIdAndUpdate(
       { _id: id },
       {
