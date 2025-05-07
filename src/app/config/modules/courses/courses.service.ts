@@ -16,12 +16,25 @@ const getasinglecourse = async(id)=>{
 }
 const updatesinglecourse = async( id ,payload :Partial<Tcourses>)=>{
      const {preRequisitecourse , ...courseremainingdata} =payload
+
     const updatebasicourseinfo= await course.findByIdAndUpdate({_id:id},courseremainingdata ,{new:true})
-    const deleteprerequisitecourse = preRequisitecourse?.filter(el=>el.course && el.isdeleted).map(el=>el.course)
+
+    if(preRequisitecourse && preRequisitecourse.length>0){
+        const deleteprerequisitecourse = preRequisitecourse?.filter(el=>el.course && el.isdeleted).map(el=>el.course)
+
     const updateprereqquisitecoursefromdb = await course.findByIdAndUpdate({_id:id} ,{
         $pull:{preRequisitecourse:{course:{$in:deleteprerequisitecourse}}}
-    } )
-    return updatebasicourseinfo
+    })
+    // adding new prerequisite course below 
+    
+    const addprerequisitecourse = preRequisitecourse?.filter(el=>el.course&&!el.isdeleted)
+
+    const addprerequisitecourseintodb = await course.findOneAndUpdate({_id:id},{
+        $addToSet:{preRequisitecourse:{$each:addprerequisitecourse}}
+    })
+    }
+    const result = await course.findById({_id:id})
+    return result
 }
 const deletecourse = async(id:string)=>{
     const result = await course.findOneAndUpdate({_id:id},{isdeleted:true},{new:true})
