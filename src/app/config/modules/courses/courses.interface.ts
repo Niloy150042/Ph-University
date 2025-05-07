@@ -11,5 +11,5 @@ export type Tcourses={
     code:number,
     credits:number,
     isdeleted:boolean,
-    preRequisitecourse: [],
+    preRequisitecourse: [Tprerequisitecourse],
 }
