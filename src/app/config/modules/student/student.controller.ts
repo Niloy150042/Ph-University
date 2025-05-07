@@ -21,7 +21,6 @@ const createstudent = catchasync(async (req,res) => {
 })
 
 const getallstudent = catchasync(async (req, res, next) => {
-   
     const result = await studentservices.getallstudentfromdb(req.query);
     res.status(201).send({
       success: true,

@@ -3,9 +3,9 @@ import asynccatch from '../utils/catchasync';
 import { courseservices } from './courses.service';
 import status from 'http-status';
 
-const createcourse = asynccatch((req: Request, res: Response, next) => {
+const createcourse = asynccatch( async (req: Request, res: Response, next) => {
   const course = req.body;
-  const result = courseservices.createcourseintodb(course);
+  const result =  await  courseservices.createcourseintodb(course);
   res.status(status.OK).send({
     success: true,
     message: 'courses created successfully ',
@@ -13,8 +13,8 @@ const createcourse = asynccatch((req: Request, res: Response, next) => {
   });
 });
 
-const findallcourse = asynccatch((req: Request, res: Response, next) => {
-  const result = courseservices.getallcourses();
+const findallcourse = asynccatch( async(req: Request, res: Response, next) => {
+  const result = await courseservices.getallcourses();
   res.status(status.OK).send({
     success: true,
     message: 'courses retrived successfully ',
