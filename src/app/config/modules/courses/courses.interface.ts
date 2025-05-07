@@ -5,6 +5,7 @@ export type Tprerequisitecourse ={
     isdeleted:boolean
 }
 export type Tcourses={
+    create: any
     title:string,
     prefix:string,
     code:number,

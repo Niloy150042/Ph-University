@@ -1,8 +1,9 @@
 
+import { Tcourses } from "./courses.interface"
 import { course } from "./courses.model"
 
-const createcourseintodb = async()=>{
-    const result = await course.create()
+const createcourseintodb = async(course :Tcourses)=>{
+    const result = await course.create(course)
     return result
 }
 const getallcourses = async()=>{
