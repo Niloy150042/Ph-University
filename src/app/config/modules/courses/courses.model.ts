@@ -11,6 +11,10 @@ const prequisitecoursesschema = new Schema<Tprerequisitecourse>({
     default: false,
   },
 });
+
+
+
+
 const coursemodel = new Schema<Tcourses>({
   title: {
     type: String,
@@ -38,6 +42,11 @@ const coursemodel = new Schema<Tcourses>({
     default:false
   },
   preRequisitecourse: [prequisitecoursesschema],
+
+  faculty:[{
+      type:Schema.Types.ObjectId,
+      ref:'academicfaculty'  
+  }]
   
 });
 export const course = model<Tcourses>('course', coursemodel);
