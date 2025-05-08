@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import asynccatch from '../utils/catchasync';
 import { courseservices } from './courses.service';
 import status from 'http-status';
+import { faculty_model } from '../academic_faculty/academic_faculty.model';
 
 const createcourse = asynccatch( async (req: Request, res: Response, next) => {
   const course = req.body;
@@ -55,15 +56,26 @@ const deletecourse = asynccatch(async(req: Request, res: Response, next) => {
 const assignfacultyandcourse = asynccatch(async(req,res,next)=>{
   const courseID= req.params.courseID
   const payload = req.body.faculty
-  console.log(payload);
   const result = await courseservices.assignfacultyintocourseintodb(courseID,payload)
   res.status(status.OK).send({
     success: true,
     message: 'created  faculty into the course  successfully ',
     faculty: result,
   });
-
 })
+
+const removefacultyfromcourse = asynccatch(async(req,res,next)=>{
+  const courseID= req.params.courseID
+  const payload = req.body.faculty
+  const result = await courseservices.removefacaultyfromcoursefromdb(courseID,payload)
+  res.status(status.OK).send({
+    success: true,
+    message: 'faculty removed from the course  successfully ',
+    faculty:result
+  });
+})
+
+
 
  
 export const coursecontroller = {
@@ -72,5 +84,6 @@ export const coursecontroller = {
   getasinglecourse,
   updatecourse,
   deletecourse,
-  assignfacultyandcourse
+  assignfacultyandcourse,
+  removefacultyfromcourse
 };

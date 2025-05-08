@@ -128,17 +128,31 @@ const assignfacultyintocourseintodb = async(id:string,payload:Partial<Tcoursefac
  
   const result = await coursefaculty.findByIdAndUpdate(id,
     {
+      $setOnInsert: { course: id },
       $addToSet:{faculty:{ $each : payload }},
     },
     {upsert:true,new:true}
-  ).populate('faculty')
+  ).populate('faculty').populate('course')
   return result
 }
+
+const removefacaultyfromcoursefromdb = async(id:string,payload:Partial<Tcoursefaculty>)=>{
+  
+  const result = await coursefaculty.findByIdAndUpdate(id,
+    {
+       $pull:{faculty:{ $in: payload}}
+    },  
+  ).populate('faculty').populate('course')
+  return result
+}
+
+
 export const courseservices = {
   createcourseintodb,
   getallcourses,
   getasinglecourse,
   updatesinglecourse,
   deletecourse,
-  assignfacultyintocourseintodb
+  assignfacultyintocourseintodb,
+  removefacaultyfromcoursefromdb
 };

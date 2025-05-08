@@ -6,6 +6,13 @@ export const prerequisiteCoursevalidationSchema = z.object({
   isdeleted: z.boolean().optional().default(false),
 });
 
+const ObjectIdRegex = /^[0-9a-fA-F]{24}$/;
+export const facultyvalidationschema = z.object({
+  
+  faculty: z.array(z.string().regex(ObjectIdRegex,'Invalid ObjectId')).nonempty('Faculty list cannot be empty'),
+})
+
+
 // Main course schema
 export const coursevalidationshcema = z.object({
   title: z.string().min(1),
