@@ -48,13 +48,13 @@ const coursefacultyschema = new Schema<Tcoursefaculty>({
   course: {
     type: Schema.Types.ObjectId,
     unique: true,
-    ref: 'course',
+    ref:'course',
   },
   faculty: [
     {
       type: Schema.Types.ObjectId,
       unique: true,
-      ref: 'academicfaculty',
+      ref:'academicfaculty',
     },
   ],
 });

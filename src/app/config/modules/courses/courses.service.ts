@@ -124,19 +124,16 @@ const deletecourse = async (id: string) => {
   return result;
 };
 
-const assignfacultyintocourseintodb = async(id:string ,payload:Partial<Tcoursefaculty>)=>{
-  const result = await coursefaculty.findByIdAndUpdate({_id:id},
+const assignfacultyintocourseintodb = async(id:string,payload:Partial<Tcoursefaculty>)=>{
+ 
+  const result = await coursefaculty.findByIdAndUpdate(id,
     {
-      $addtoset:{faculties:{each:{payload}}},
-
+      $addToSet:{faculty:{ $each : payload }},
     },
     {upsert:true,new:true}
- 
-   
-  )
+  ).populate('faculty')
   return result
 }
-
 export const courseservices = {
   createcourseintodb,
   getallcourses,

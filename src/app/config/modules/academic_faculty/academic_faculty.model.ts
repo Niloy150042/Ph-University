@@ -10,5 +10,4 @@ const academic_faculty_schema = new Schema<Tacademic_faculty>({
 } ,{
     timestamps:true
 });
-
 export const faculty_model = model<Tacademic_faculty>('academicfaculty',academic_faculty_schema)
