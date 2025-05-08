@@ -4,12 +4,6 @@ export type Tprerequisitecourse ={
     course : Types.ObjectId
     isdeleted:boolean
 }
-
-export type Tfaculties ={
-    faculty :Types.ObjectId
-    isdeleted:boolean
-}
-
 export type Tcourses={
     create: any
     title:string,
@@ -17,6 +11,9 @@ export type Tcourses={
     code:number,
     credits:number,
     isdeleted:boolean,
-    preRequisitecourse: [Tprerequisitecourse],
-    faculty :[Tfaculties]
+    preRequisitecourse: [Tprerequisitecourse]
+}
+export type Tcoursefaculty ={ 
+    course :Types.ObjectId
+    faculty:[Types.ObjectId]
 }
