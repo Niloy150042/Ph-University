@@ -19,107 +19,102 @@ const getasinglecourse = async id => {
 const updatesinglecourse = async (id, payload: Partial<Tcourses>) => {
   const { preRequisitecourse, ...courseremainingdata } = payload;
 
-  // starting transaction 
+  // starting transaction
 
-  const session = await mongoose.startSession()
-  try{
+  const session = await mongoose.startSession();
+  try {
+    session.startTransaction();
 
- 
-  session.startTransaction()
-
-  const updatebasicourseinfo = await course.findByIdAndUpdate(
-    { _id: id },
-    courseremainingdata,
-    { new: true ,session},
-  );
-
-  if(!updatebasicourseinfo){
-    throw new Error ('failed to update basiccourse information')
-  }
-
-  if (preRequisitecourse && preRequisitecourse.length > 0) {
-
-    const deleteprerequisitecourse = preRequisitecourse
-      ?.filter(el => el.course && el.isdeleted)
-      .map(el => el.course);
-
-    const updateprereqquisitecoursefromdb = await course.findByIdAndUpdate(
-        
+    const updatebasicourseinfo = await course.findByIdAndUpdate(
       { _id: id },
-      {
-        $pull: {
-          preRequisitecourse: { course: { $in: deleteprerequisitecourse } },
+      courseremainingdata,
+      { new: true, session },
+    );
+
+    if (!updatebasicourseinfo) {
+      throw new Error('failed to update basiccourse information');
+    }
+
+    if (preRequisitecourse && preRequisitecourse.length > 0) {
+      const deleteprerequisitecourse = preRequisitecourse
+        ?.filter(el => el.course && el.isdeleted)
+        .map(el => el.course);
+
+      const updateprereqquisitecoursefromdb = await course.findByIdAndUpdate(
+        { _id: id },
+        {
+          $pull: {
+            preRequisitecourse: { course: { $in: deleteprerequisitecourse } },
+          },
         },
-      },{new:true, session},
-    );
+        { new: true, session },
+      );
 
-    if(!updateprereqquisitecoursefromdb){
-      throw new Error ('failed to delete prerequisitecourse information')
-    }
+      if (!updateprereqquisitecoursefromdb) {
+        throw new Error('failed to delete prerequisitecourse information');
+      }
 
-    // adding new prerequisite course below
+      // adding new prerequisite course below
 
-    const addprerequisitecourse = preRequisitecourse.filter(
-      el => el.course && !el.isdeleted,
-    );
-    // console.log(addprerequisitecourse);
+      const addprerequisitecourse = preRequisitecourse.filter(
+        el => el.course && !el.isdeleted,
+      );
+      // console.log(addprerequisitecourse);
 
-    // Get the updated course's current prerequisites
-    const updatedCourse = await course.findById(id);
+      // Get the updated course's current prerequisites
+      const updatedCourse = await course.findById(id);
 
-    const existingCourses = updatedCourse?.preRequisitecourse || [];
-    // console.log(existingCourses);
+      const existingCourses = updatedCourse?.preRequisitecourse || [];
+      // console.log(existingCourses);
 
-    // Step 4: Check if any course to add already exists
-    const isDuplicate = addprerequisitecourse.some(item =>
-      existingCourses.some(
-        existing =>
-          existing.course==item.course &&
-          existing.isdeleted == item.isdeleted,
-      ),
-    );
+      // Step 4: Check if any course to add already exists
+      const isDuplicate = addprerequisitecourse.some(item =>
+        existingCourses.some(
+          existing =>
+            existing.course == item.course &&
+            existing.isdeleted == item.isdeleted,
+        ),
+      );
 
-    if (isDuplicate) {
-      throw new Error('course already exist');
-    }
+      if (isDuplicate) {
+        throw new Error('course already exist');
+      }
 
-    // Step 5: If no duplicate, add new prerequisite courses
+      // Step 5: If no duplicate, add new prerequisite courses
 
-    const addprerequisitecourses= await course.findByIdAndUpdate(
-      { _id: id },
-      {
-        $addToSet: {
-          preRequisitecourse: { $each: addprerequisitecourse },
+      const addprerequisitecourses = await course.findByIdAndUpdate(
+        { _id: id },
+        {
+          $addToSet: {
+            preRequisitecourse: { $each: addprerequisitecourse },
+          },
         },
-      },{new:true, session},
-    );
+        { new: true, session },
+      );
 
-    if(!addprerequisitecourses){
-      throw new Error ('Failed to add new prerequisite courses')
-      
+      if (!addprerequisitecourses) {
+        throw new Error('Failed to add new prerequisite courses');
+      }
     }
-  }
-  if (session.inTransaction()) {
-    await session.commitTransaction();
-    session.endSession()
-  }
+    if (session.inTransaction()) {
+      await session.commitTransaction();
+      session.endSession();
+    }
 
-  const result = await course
-  .findById({ _id: id })
-  .populate('preRequisitecourse.course');
-  return result;
-}
+    const result = await course
+      .findById({ _id: id })
+      .populate('preRequisitecourse.course');
+    return result;
+  } catch (err) {
+    console.error('Error occurred while updating course:', err); 
 
-
-catch (err) {
-  console.error('Error occurred while updating course:', err); // 🔍 actual error log
-  if (session.inTransaction()) {
-    await session.abortTransaction();
+    if (session.inTransaction()) {
+      await session.abortTransaction();
+    }
+    session.endSession();
+    throw new Error('failed to update course info');
   }
-  session.endSession();
-  throw new Error('failed to update course info');
-}
-}
+};
 const deletecourse = async (id: string) => {
   const result = await course.findOneAndUpdate(
     { _id: id },
