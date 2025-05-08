@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
-import { Tcourses } from './courses.interface';
-import { course } from './courses.model';
+import { Tcoursefaculty, Tcourses } from './courses.interface';
+import { course, coursefaculty } from './courses.model';
 
 const createcourseintodb = async (coursedata: Tcourses) => {
   const result = await course.create(coursedata);
@@ -123,10 +123,25 @@ const deletecourse = async (id: string) => {
   );
   return result;
 };
+
+const assignfacultyintocourseintodb = async(id:string ,payload:Partial<Tcoursefaculty>)=>{
+  const result = await coursefaculty.findByIdAndUpdate({_id:id},
+    {
+      $addtoset:{faculties:{each:{payload}}},
+
+    },
+    {upsert:true,new:true}
+ 
+   
+  )
+  return result
+}
+
 export const courseservices = {
   createcourseintodb,
   getallcourses,
   getasinglecourse,
   updatesinglecourse,
   deletecourse,
+  assignfacultyintocourseintodb
 };

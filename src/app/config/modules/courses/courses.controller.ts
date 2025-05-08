@@ -52,10 +52,24 @@ const deletecourse = asynccatch(async(req: Request, res: Response, next) => {
     data: result,
   });
 });
+const assignfacultyandcourse = asynccatch(async(req,res,next)=>{
+  const courseID=req.params.courseID
+  const payload = req.body
+  const result = await courseservices.assignfacultyintocourseintodb(courseID,payload)
+  res.status(status.OK).send({
+    success: true,
+    message: ' created  faculty into the course  successfully ',
+    data: result,
+  });
+
+})
+
+ 
 export const coursecontroller = {
   createcourse,
   findallcourse,
   getasinglecourse,
   updatecourse,
   deletecourse,
+  assignfacultyandcourse
 };

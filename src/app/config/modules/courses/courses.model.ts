@@ -1,10 +1,14 @@
 import { model, Schema } from 'mongoose';
-import { Tcoursefaculty, Tcourses, Tprerequisitecourse } from './courses.interface';
+import {
+  Tcoursefaculty,
+  Tcourses,
+  Tprerequisitecourse,
+} from './courses.interface';
 
 const prequisitecoursesschema = new Schema<Tprerequisitecourse>({
   course: {
     type: Schema.Types.ObjectId,
-    ref:'course'
+    ref: 'course',
   },
   isdeleted: {
     type: Boolean,
@@ -35,26 +39,29 @@ const coursemodel = new Schema<Tcourses>({
   },
   isdeleted: {
     type: Boolean,
-    default:false
+    default: false,
   },
-  preRequisitecourse: [prequisitecoursesschema], 
+  preRequisitecourse: [prequisitecoursesschema],
 });
 
 const coursefacultyschema = new Schema<Tcoursefaculty>({
-
-  course :{
-    type :Schema.Types.ObjectId,
-    unique:true,
-    ref:'course'
+  course: {
+    type: Schema.Types.ObjectId,
+    unique: true,
+    ref: 'course',
   },
-  faculty :[{
-    type :Schema.Types.ObjectId,
-    unique:true,
-    ref:'academicfaculty'
-  }]
-})
+  faculty: [
+    {
+      type: Schema.Types.ObjectId,
+      unique: true,
+      ref: 'academicfaculty',
+    },
+  ],
+});
 
-
-export const coursefaculty = model<Tcoursefaculty>('coursefaculty',coursefacultyschema)
+export const coursefaculty = model<Tcoursefaculty>(
+  'coursefaculty',
+  coursefacultyschema,
+);
 
 export const course = model<Tcourses>('course', coursemodel);
