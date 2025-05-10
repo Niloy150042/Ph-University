@@ -51,11 +51,19 @@ const updateregesteredsemester = async(id:string,payload:Partial<Tsemesterregist
   if(istheresmesterexist.status=='ENDED'){
     throw new Error ('Your semester has been endeed , you cant update this ')
   }
+
+  if(istheresmesterexist.status=="UPCOMING"&& payload.status=="ENDED"){
+    throw new Error (`You cant update your semester ${istheresmesterexist.status} to ${payload.status}`)
+  }
+
+  if(istheresmesterexist.status == "ONGOING" && payload.status=='UPCOMING'){
+    throw new Error ( `You cant update your semester ${istheresmesterexist.status} to ${payload.status}`)
+  }
+  
+
   const result = await semesterregistraionmodel.findOneAndUpdate({_id:id},payload,{new:true})
   return result 
-
 }
-
 export const semesterregistraionservice ={
     createsemesterregistrationintodb,
     getallregisteredsemester,
