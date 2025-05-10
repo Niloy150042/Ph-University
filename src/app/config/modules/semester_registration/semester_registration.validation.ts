@@ -8,8 +8,8 @@ const semesterregistrationvalidation = z.object({
       message: 'Invalid academicsemester ObjectId',
     }),
   status: z.enum(['UPCOMING', 'ONGOING','ENDED']).optional(), // optional since default is UPCOMING
-  startDate: z.date().optional(),
-  endDate: z.date().optional(),
+  startDate: z.string().optional(),
+  endDate: z.string().optional(),
   mincredit: z.number().min(0).default(3), // can't be negative
   maxcredit: z.number().min(0).default(15),
 });

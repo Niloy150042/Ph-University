@@ -11,4 +11,19 @@ semester_registarion_router.post(
   semesterregistrationcontroller.createsemesterregistration,
 );
 
+semester_registarion_router.get(
+  '/getall-registered-semester',
+  semesterregistrationcontroller.getallsemester,
+);
+
+semester_registarion_router.get(
+  '/getsingle-registered-semester/:id',
+  semesterregistrationcontroller.getsinglesemester,
+);
+
+semester_registarion_router.patch(
+  '/update-registered-semester/:id',
+  semesterregistrationcontroller.updateasinglesemester,
+);
+
 export default semester_registarion_router;

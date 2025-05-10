@@ -13,6 +13,42 @@ const createsemesterregistration = asynccatch(async(req:Request,res:Response,nex
 
 })
 
+const getallsemester =asynccatch(async(req:Request,res:Response,next)=>{
+
+    const result = await semesterregistraionservice.getallregisteredsemester()
+    res.status(status.OK).send({
+        success:true,
+        message:"all reagestered semester is retrived successfully",
+        data:result 
+    })
+
+})
+
+
+const getsinglesemester =asynccatch(async(req:Request,res:Response,next)=>{
+    const id =req.params.id
+    const result = await semesterregistraionservice.getsingleregisteredsemester(id)
+    res.status(status.OK).send({
+        success:true,
+        message:"your reagestered semester is retrived successfully",
+        data:result 
+    })
+
+})
+
+const updateasinglesemester =asynccatch(async(req:Request,res:Response,next)=>{
+    const id =req.params.id
+    const payload =req.body
+    const result = await semesterregistraionservice.updateregesteredsemester(id,payload)
+    res.status(status.OK).send({
+        success:true,
+        message:"your reagestered semester is updated successfully",
+        data:result 
+    })
+})
+
 export const semesterregistrationcontroller ={
-    createsemesterregistration
+    createsemesterregistration,
+    getallsemester,getsinglesemester,
+    updateasinglesemester
 }

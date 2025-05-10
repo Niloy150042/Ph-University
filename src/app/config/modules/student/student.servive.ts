@@ -4,6 +4,10 @@ const createstudentintodb = async (student:student)=>{
      const result = await studentmodel.create(student) // mongoose built in static method
      return result
 }
+
+
+// getting all student basic on requirements 
+
 const getallstudentfromdb = async(query)=>{
     const queryobj = {...query}
 //  console.log(queryobj);
@@ -12,23 +16,27 @@ const getallstudentfromdb = async(query)=>{
     if(query.SearchTerm){
         searchterm=query.SearchTerm
     }
+    console.log(searchterm);
     // console.log(searchterm);
 
   const studentsearchablefield =['email', 'name.firstname','name.lastname','gender','avatar','bloodgroup','persentaddress']
+
    const searchquery =studentmodel.find(
         {
             $or:studentsearchablefield.map((field)=>({
-                [field]:{$regex:searchterm , $options: 'i'}
+                [field]:{$regex:searchterm,$options: 'i'}
             }))
         }
     )
     const removefields = ['SearchTerm','sort','limit','page','fields']
     // console.log(removefields);
     removefields.forEach((el)=>delete queryobj[el]);
-    console.log(query);
-    console.log(queryobj);
 
-    const filterquery  =  searchquery.find(queryobj) .populate('admissionsemester').populate({
+
+    console.log( 'query', query);
+    console.log( 'queryobject',queryobj);
+
+    const filterquery  = searchquery.find(queryobj) .populate('admissionsemester').populate({
         path:'academicdepartment',
         populate:{
             path:'academic_faculty'
@@ -36,7 +44,7 @@ const getallstudentfromdb = async(query)=>{
     })
 
  let sort = 'createdAt'
-
+ 
  if (query.sort){
     sort=query.sort
     console.log(sort); 
@@ -61,7 +69,7 @@ if(query.limit){
 const sortquery = filterquery.sort(sort)
 const paginatedquery = sortquery.skip(skip)
 
-const limitquery =   paginatedquery.limit(limit)
+const limitquery = paginatedquery.limit(limit)
 const fieldfilterquery = await limitquery.select(fields)
 return fieldfilterquery
 
