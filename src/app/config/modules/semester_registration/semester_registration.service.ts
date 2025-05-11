@@ -66,7 +66,7 @@ const updateregesteredsemester = async (
       `You cant update your semester ${istheresmesterexist.status} to ${payload.status}`,
     );
   }
-  if (istheresmesterexist.status == 'ONGOING' && payload.status == 'UPCOMING') {
+  if (istheresmesterexist.status as string == 'ONGOING' && payload.status == 'UPCOMING') {
     throw new Error(
       `You cant update your semester ${istheresmesterexist.status} to ${payload.status}`,
     );
