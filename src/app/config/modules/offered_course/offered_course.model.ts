@@ -6,27 +6,33 @@ const  days = ['sat','sun','mon','tue','wed','thu','fri']
 const offeredcourseschema = new Schema<Tofferedcourse>({
     semesterregistration:{
         type:Schema.Types.ObjectId,
-        required:true
+        required:true,
+        ref:'semesterregistration'
     },
     academicsemester:{
          type :Schema.Types.ObjectId,
-         required:true
+         required:true,
+         ref:'semester'
     },
     academic_faculty:{
         type:Schema.Types.ObjectId,
-        required:true
+        required:true,
+        ref:'academicfaculty'
     },
     academic_department:{
         type:Schema.Types.ObjectId,
-        required:true
+        required:true,
+        ref:'academic_department'
     },
     course :{
         type:Schema.Types.ObjectId,
-        required:true
+        required:true,
+        ref:'course'
     },
     faculty:{
         type :Schema.Types.ObjectId,
-        required:true
+        required:true,
+        ref:'academicfaculty'
     },
     maxcapacity:{
         type:Number,
