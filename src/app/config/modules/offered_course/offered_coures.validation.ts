@@ -9,7 +9,6 @@ export const offeredCourseZodSchema = z.object({
   academic_faculty: z.string().min(1, 'Academic faculty is required'),
   academic_department: z.string().min(1, 'Academic department is required'),
   course: z.string().min(1, 'Course is required'),
-  faculty: z.string().min(1, 'Faculty is required'),
   maxcapacity: z.number().min(1, 'Max capacity must be at least 1'),
   section: z.string().min(1, 'Section is required'),
   days: daysEnum,

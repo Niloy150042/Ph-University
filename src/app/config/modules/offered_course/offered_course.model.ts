@@ -29,11 +29,7 @@ const offeredcourseschema = new Schema<Tofferedcourse>({
     required: true,
     ref: 'course',
   },
-  faculty: {
-    type: Schema.Types.ObjectId,
-    required: true,
-    ref: 'academicfaculty',
-  },
+  
   maxcapacity: {
     type: Number,
     required: true,

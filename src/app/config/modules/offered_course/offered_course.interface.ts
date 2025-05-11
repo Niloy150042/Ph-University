@@ -7,11 +7,10 @@ export type Tofferedcourse ={
     academic_faculty :Types.ObjectId,
     academic_department :Types.ObjectId,
     course:Types.ObjectId,
-    faculty :Types.ObjectId,
     maxcapacity :number,
     section :string,
     days : days,
     startTime :string,
     endTime :string
-    
+   
 }
