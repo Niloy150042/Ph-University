@@ -6,6 +6,7 @@ import facultyrouter from '../modules/academic_faculty/academic_faculty.route';
 import departmentrouter from '../modules/academic_department/academic_department.route';
 import courserouter from '../modules/courses/courses.route';
 import semester_registarion_router from '../modules/semester_registration/semester_registration.route';
+import offered_course_router from '../modules/offered_course/offered_course.route';
 
 
 const router = express.Router();
@@ -38,10 +39,14 @@ const modulerouter = [
 {
   path:'/semester-registration',
   route:semester_registarion_router
+},
+{
+  path:'/offered-course',
+  route:offered_course_router
 }
 ];
-
 modulerouter.forEach(route => router.use(route.path, route.route));
+
 // router.use('/students',studentroutes),   router.use('/users',userroutes)
 
 export default router;
