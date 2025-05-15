@@ -11,7 +11,6 @@ const createofferedcourse = asynccatch(async(req:Request,res:Response,next)=>{
         data:result 
      })
 })
-
 export const  offerecoursecontroller ={
     createofferedcourse
 }

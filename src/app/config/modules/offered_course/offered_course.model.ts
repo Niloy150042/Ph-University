@@ -1,7 +1,7 @@
 import { model, Schema } from 'mongoose';
 import { Tofferedcourse } from './offered_course.interface';
 
-const days = ['sat', 'sun', 'mon', 'tue', 'wed', 'thu', 'fri'];
+const days = ['SATURDAY', 'SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY'];
 
 const offeredcourseschema = new Schema<Tofferedcourse>({
   semesterregistration: {

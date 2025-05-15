@@ -1,6 +1,6 @@
 import { Types } from "mongoose"
 
-export type days = 'sat'|'sun'|'mon'|'tue'|'wed'|'thu'|'fri'
+export type days = 'SATURDAY'| 'SUNDAY'| 'MONDAY'| 'TUESDAY'| 'WEDNESDAY'| 'THURSDAY'| 'FRIDAY'
 export type Tofferedcourse ={
     semesterregistration :Types.ObjectId,
     academicsemester :Types.ObjectId,

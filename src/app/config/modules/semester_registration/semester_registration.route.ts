@@ -10,7 +10,6 @@ semester_registarion_router.post(
   myarmymiddlware(semesterregistrationvalidation),
   semesterregistrationcontroller.createsemesterregistration,
 );
-
 semester_registarion_router.get(
   '/getall-registered-semester',
   semesterregistrationcontroller.getallsemester,

@@ -15,7 +15,7 @@ const app: Application = express();
 app.use(express.json());
 app.use(cors());
 
-app.use('/api/v1', router)
+app.use('/api/v1',router)
 
 app.get('/test', async(req:Request,res:Response)=>{
 
@@ -35,6 +35,6 @@ app.use(
   ) => void,
 );
 
-app.use(notfound as (req: express.Request, res: express.Response) => void);
+app.use(notfound as (req: express.Request, res: express.Response) =>void);
 
 export default app;

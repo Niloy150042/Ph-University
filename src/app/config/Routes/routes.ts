@@ -47,6 +47,6 @@ const modulerouter = [
 ];
 modulerouter.forEach(route => router.use(route.path, route.route));
 
-// router.use('/students',studentroutes),   router.use('/users',userroutes)
+// router.use('/students',studentroutes), router.use('/users',userroutes)
 
 export default router;
