@@ -1,6 +1,9 @@
+import { department_model } from "../academic_department/academic_department.model"
+import { faculty_model } from "../academic_faculty/academic_faculty.model"
 import semesterregistraionmodel from "../semester_registration/semester_registration.model"
 import { Tofferedcourse } from "./offered_course.interface"
 import { offerecoursemodel } from "./offered_course.model"
+import { Coursemodel } from '../courses/courses.model'
 
 const createofferedcouse = async(payload:Tofferedcourse)=>{
 //   checking if the admission semester is exist or not
@@ -11,13 +14,19 @@ const createofferedcouse = async(payload:Tofferedcourse)=>{
     if(!issemesterexist){
         throw  new Error ('Semester is not exist in the semester database')
     }
-      if(!academic_faculty){
+      const isacademicfacultyexist = await faculty_model.findById(academic_faculty)
+
+      if(!isacademicfacultyexist){
         throw  new Error ('academic_faculty is not exist in the academic faculty database')
     }
-      if(!academic_department){
+    const isdepartmentexist = await department_model.findById(academic_department)
+      if(!isdepartmentexist){
         throw  new Error ('academic department is not exist in the academic department database')
     }
-      if(!course){
+
+    const iscourseexist = await Coursemodel.findById(course)
+
+      if(!iscourseexist){
         throw  new Error ('course is not exist in the course database')
     }
     

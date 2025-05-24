@@ -64,4 +64,4 @@ export const coursefaculty = model<Tcoursefaculty>(
   coursefacultyschema,
 );
 
-export const course = model<Tcourses>('course', coursemodel);
+export const Coursemodel = model<Tcourses>('course', coursemodel);

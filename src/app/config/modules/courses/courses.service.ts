@@ -1,17 +1,17 @@
 import mongoose from 'mongoose';
 import { Tcoursefaculty, Tcourses } from './courses.interface';
-import { course, coursefaculty } from './courses.model';
+import {  coursefaculty, Coursemodel } from './courses.model';
 
 const createcourseintodb = async (coursedata: Tcourses) => {
-  const result = await course.create(coursedata);
+  const result = await Coursemodel.create(coursedata);
   return result;
 };
 const getallcourses = async () => {
-  const result = await course.find().populate('preRequisitecourse.course');
+  const result = await Coursemodel.find().populate('preRequisitecourse.course');
   return result;
 };
 const getasinglecourse = async id => {
-  const result = await course
+  const result = await Coursemodel
     .findById(id)
     .populate('preRequisitecourse.course');
   return result;
@@ -25,7 +25,7 @@ const updatesinglecourse = async (id, payload: Partial<Tcourses>) => {
   try {
     session.startTransaction();
 
-    const updatebasicourseinfo = await course.findByIdAndUpdate(
+    const updatebasicourseinfo = await Coursemodel.findByIdAndUpdate(
       { _id: id },
       courseremainingdata,
       { new: true, session },
@@ -40,7 +40,7 @@ const updatesinglecourse = async (id, payload: Partial<Tcourses>) => {
         ?.filter(el => el.course && el.isdeleted)
         .map(el => el.course);
 
-      const updateprereqquisitecoursefromdb = await course.findByIdAndUpdate(
+      const updateprereqquisitecoursefromdb = await Coursemodel.findByIdAndUpdate(
         { _id: id },
         {
           $pull: {
@@ -62,7 +62,7 @@ const updatesinglecourse = async (id, payload: Partial<Tcourses>) => {
       // console.log(addprerequisitecourse);
 
       // Get the updated course's current prerequisites
-      const updatedCourse = await course.findById(id);
+      const updatedCourse = await Coursemodel.findById(id);
 
       const existingCourses = updatedCourse?.preRequisitecourse || [];
       // console.log(existingCourses);
@@ -82,7 +82,7 @@ const updatesinglecourse = async (id, payload: Partial<Tcourses>) => {
 
       // Step 5: If no duplicate, add new prerequisite courses
 
-      const addprerequisitecourses = await course.findByIdAndUpdate(
+      const addprerequisitecourses = await Coursemodel.findByIdAndUpdate(
         { _id: id },
         {
           $addToSet: {
@@ -101,7 +101,7 @@ const updatesinglecourse = async (id, payload: Partial<Tcourses>) => {
       session.endSession();
     }
 
-    const result = await course
+    const result = await Coursemodel
       .findById({ _id: id })
       .populate('preRequisitecourse.course');
     return result;
@@ -116,7 +116,7 @@ const updatesinglecourse = async (id, payload: Partial<Tcourses>) => {
   }
 };
 const deletecourse = async (id: string) => {
-  const result = await course.findOneAndUpdate(
+  const result = await Coursemodel.findOneAndUpdate(
     { _id: id },
     { isdeleted: true },
     { new: true },
