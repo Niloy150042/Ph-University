@@ -11,7 +11,6 @@ const offeredcourseschema = new Schema<Tofferedcourse>({
   },
   academicsemester: {
     type: Schema.Types.ObjectId,
-    required: true,
     ref: 'semester',
   },
   academic_faculty: {

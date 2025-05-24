@@ -1,10 +1,20 @@
 import { TGerrorresponse } from '../app/config/modules/utils/errortype';
 
-// Mongoose error will handle into my custom error below
 export const handlemongooseerror = (err): TGerrorresponse => {
-  const errorsource = err.errors.name.message;
   const statusCode = 400;
-  const message = 'invalid id ';
+  const message = 'Invalid ID or Bad Request';
+
+  // fallback error message
+  let errorsource = 'Unknown Mongoose error';
+
+  // Try to extract meaningful error
+  if (err.errors) {
+    const allErrors = Object.values(err.errors).map((el: any) => el.message);
+    errorsource = allErrors.join('. ');
+  } else if (err.message) {
+    errorsource = err.message;
+  }
+
   return {
     statusCode,
     message,

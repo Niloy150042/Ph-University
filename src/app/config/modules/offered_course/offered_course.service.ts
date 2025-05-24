@@ -6,7 +6,8 @@ import { offerecoursemodel } from "./offered_course.model"
 import { Coursemodel } from '../courses/courses.model'
 
 const createofferedcouse = async(payload:Tofferedcourse)=>{
-//   checking if the admission semester is exist or not
+
+//   checking if all payloads are  exist in db  or not
     
     const {semesterregistration,academic_faculty,academic_department,course}=payload
 
@@ -29,9 +30,11 @@ const createofferedcouse = async(payload:Tofferedcourse)=>{
       if(!iscourseexist){
         throw  new Error ('course is not exist in the course database')
     }
-    
 
-    const result = await offerecoursemodel.create(payload)
+    const academicsemester = issemesterexist.academicsemester
+    
+    const result = await offerecoursemodel.create({...payload,academicsemester})
+
     return result 
 }
 export const offeredcourseservices ={
