@@ -13,7 +13,7 @@ const createofferedcouse = async(payload:Tofferedcourse)=>{
 
     const issemesterexist = await semesterregistraionmodel.findById(semesterregistration)
     if(!issemesterexist){
-        throw  new Error ('Semester is not exist in the semester database')
+        throw new Error ('Semester is not exist in the semester database')
     }
       const isacademicfacultyexist = await faculty_model.findById(academic_faculty)
 
@@ -24,11 +24,10 @@ const createofferedcouse = async(payload:Tofferedcourse)=>{
       if(!isdepartmentexist){
         throw  new Error ('academic department is not exist in the academic department database')
     }
-
     const iscourseexist = await Coursemodel.findById(course)
 
       if(!iscourseexist){
-        throw  new Error ('course is not exist in the course database')
+        throw new Error ('course is not exist in the course database')
     }
 
     const academicsemester = issemesterexist.academicsemester

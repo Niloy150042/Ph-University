@@ -1,7 +1,6 @@
 
 import { Tacademic_semester } from './academic_semester.interface';
 import { semestermodel } from './academic_semseter.model';
-import { ObjectId } from 'mongoose';
 
 const createsemesterintodb = async (semester: Tacademic_semester) => {
   const result = await semestermodel.create(semester);

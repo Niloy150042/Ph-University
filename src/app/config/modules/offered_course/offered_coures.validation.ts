@@ -11,6 +11,15 @@ export const offeredCourseZodSchema = z.object({
   maxcapacity: z.number().min(1, 'Max capacity must be at least 1'),
   section: z.string().min(1, 'Section is required'),
   days: daysEnum,
-  startTime: z.string().min(1, 'Start time is required'),
-  endTime: z.string().min(1, 'End time is required'),
-});
+
+  startTime: z.string().min(1, 'Start time is required').refine((time)=>{
+    const regex =/^(0?[1-9]|1[0-2]):[0-5][0-9]\s?(AM|PM)$/i
+    return regex.test(time)
+  },{message:"ivalid starttime format"}),
+
+  endTime:  z.string().min(1, 'Start time is required').refine((time)=>{
+    const regex =/^(0?[1-9]|1[0-2]):[0-5][0-9]\s?(AM|PM)$/i
+    return regex.test(time)
+  },{message:"ivalid endtime  format"})
+
+}) ;
