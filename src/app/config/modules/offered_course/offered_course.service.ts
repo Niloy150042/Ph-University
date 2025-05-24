@@ -4,13 +4,13 @@ import semesterregistraionmodel from "../semester_registration/semester_registra
 import { Tofferedcourse } from "./offered_course.interface"
 import { offerecoursemodel } from "./offered_course.model"
 import { Coursemodel } from '../courses/courses.model'
-import mongoose from "mongoose"
+
 
 const createofferedcouse = async(payload:Tofferedcourse)=>{
 
 //   checking if all payloads are  exist in db  or not
     
-    const {semesterregistration,academic_faculty,academic_department,course,section}=payload
+    const {semesterregistration,academic_faculty,academic_department,course,section,days,startTime,endTime}=payload
 
     const issemesterexist = await semesterregistraionmodel.findById(semesterregistration)
     if(!issemesterexist){
@@ -40,7 +40,26 @@ const createofferedcouse = async(payload:Tofferedcourse)=>{
         throw new Error('department is not belong to faculty')
     }
     const isofferedcoursealreadyexistwithsection = await offerecoursemodel.findOne ({section})
+
+ 
+    // checking the time confliction of the academic faculty with same time 
+
+
+    const assignschedules = await offerecoursemodel.find({semesterregistration,days}).
+    select('days startTime endTime')
+    console.log(assignschedules);
     
+    const newschedules={
+      days,startTime,endTime
+    }
+   console.log(newschedules);
+
+   assignschedules.forEach((schedule)=>{
+    if((schedule.startTime ==newschedules.startTime && schedule.endTime == newschedules.endTime)||(newschedules.startTime<schedule.startTime && newschedules.endTime<schedule.endTime))
+      throw new Error('please try to take class in new schedule ')
+
+   })
+  
     if(!isofferedcoursealreadyexistwithsection){
          const result = await offerecoursemodel.create({...payload,academicsemester})
        return result 
