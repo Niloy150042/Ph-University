@@ -20,7 +20,6 @@ export const offeredCourseZodSchema = z.object({
 
   endTime:  z.string().min(1, 'Start time is required').refine((time)=>{
     const regex =/^(0?[1-9]|1[0-2]):[0-5][0-9]$/i
-
     return regex.test(time)
   },{message:"ivalid endtime  format"})
 

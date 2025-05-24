@@ -4,12 +4,13 @@ import semesterregistraionmodel from "../semester_registration/semester_registra
 import { Tofferedcourse } from "./offered_course.interface"
 import { offerecoursemodel } from "./offered_course.model"
 import { Coursemodel } from '../courses/courses.model'
+import mongoose from "mongoose"
 
 const createofferedcouse = async(payload:Tofferedcourse)=>{
 
 //   checking if all payloads are  exist in db  or not
     
-    const {semesterregistration,academic_faculty,academic_department,course}=payload
+    const {semesterregistration,academic_faculty,academic_department,course,section}=payload
 
     const issemesterexist = await semesterregistraionmodel.findById(semesterregistration)
     if(!issemesterexist){
@@ -31,10 +32,26 @@ const createofferedcouse = async(payload:Tofferedcourse)=>{
     }
 
     const academicsemester = issemesterexist.academicsemester
-    
-    const result = await offerecoursemodel.create({...payload,academicsemester})
 
-    return result 
+    // check if the department is belong to the facutly 
+
+    const isdepertmentbelongtofaculty = await department_model.findOne({ academic_faculty, _id:academic_department})
+    if(!isdepertmentbelongtofaculty){
+        throw new Error('department is not belong to faculty')
+    }
+    const isofferedcoursealreadyexistwithsection = await offerecoursemodel.findOne ({section})
+    
+    if(!isofferedcoursealreadyexistwithsection){
+         const result = await offerecoursemodel.create({...payload,academicsemester})
+       return result 
+
+    }
+    else{
+        throw new Error ('course cannot offer in same section')
+    }
+
+   
+   
 }
 export const offeredcourseservices ={
     createofferedcouse
