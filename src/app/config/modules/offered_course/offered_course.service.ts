@@ -59,17 +59,14 @@ const createofferedcouse = async(payload:Tofferedcourse)=>{
       throw new Error('please try to take class in new schedule ')
 
    })
-  
+
     if(!isofferedcoursealreadyexistwithsection){
          const result = await offerecoursemodel.create({...payload,academicsemester})
        return result 
-
     }
     else{
         throw new Error ('course cannot offer in same section')
     }
-
-   
    
 }
 export const offeredcourseservices ={
