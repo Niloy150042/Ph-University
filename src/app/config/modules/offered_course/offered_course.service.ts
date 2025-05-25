@@ -52,8 +52,7 @@ const createofferedcouse = async(payload:Tofferedcourse)=>{
     const newschedules={
       days,startTime,endTime
     }
-   console.log(newschedules);
-
+  //  console.log(newschedules);
    assignschedules.forEach((schedule)=>{
     if((schedule.startTime ==newschedules.startTime && schedule.endTime == newschedules.endTime)||(newschedules.startTime<schedule.startTime && newschedules.endTime<schedule.endTime))
       throw new Error('please try to take class in new schedule ')
