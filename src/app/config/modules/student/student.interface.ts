@@ -39,8 +39,6 @@ export type student = {
   profileimage?: string;
   admissionsemester:Types.ObjectId;
   academicdepartment:Types.ObjectId;
-  isdeleted:boolean
-
-  
+  isdeleted:boolean  
 };
 

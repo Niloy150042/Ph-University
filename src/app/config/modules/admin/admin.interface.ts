@@ -1,10 +1,10 @@
 import { Types } from "mongoose"
 
-type Tusername ={
+export type Tusername ={
     firstname :string,
     lastname :string
 }
-type Tgender = 'male'|'female'|'other'
+ export type Tgender = 'male'|'female'|'other'
 
 type Tbloodgroup =
   | "A+"
@@ -27,7 +27,7 @@ export type  Tadmin ={
     contactno :string,
     emergencycontactno :string,
     bloodgroup : Tbloodgroup
-    presentaddressL: string,
+    presentaddress: string,
     permanentaddress :string,
     isdeleted:boolean
 }

@@ -9,10 +9,10 @@ import {
 
 const nameschema = new Schema<username>({
   firstname: { type: String, required: true },
-
   middlename: { type: String, required: true },
   lastname: { type: String, required: true },
 });
+
 const guardianschema = new Schema<guardian>({
   fathername: { type: String },
   fatheroccupation: { type: String },
@@ -34,12 +34,14 @@ const studentschema = new Schema<student>({
     type: nameschema,
     required: [true, 'Student name is required'],
   },
+
   user: {
     type: Schema.Types.ObjectId,
     ref: 'user',
     required: [true, 'userid is must be required'],
     unique: true,
   },
+
   id:{
     type:String
   },
