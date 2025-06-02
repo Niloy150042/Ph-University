@@ -6,32 +6,30 @@ type Tusername ={
 }
 type Tgender = 'male'|'female'|'other'
 
+type Tbloodgroup =
+  | "A+"
+  | "A-"
+  | "B+"
+  | "B-"
+  | "AB+"
+  | "AB-"
+  | "O+"
+  | "O-";
+
 export type  Tadmin ={
     id :string,
     user:Types.ObjectId
     name:Tusername
     gender : Tgender
+    designation :string
+    dateofbirth? :Date
+    email :string,
+    contactno :string,
+    emergencycontactno :string,
+    bloodgroup : Tbloodgroup
+    presentaddressL: string,
+    permanentaddress :string,
+    isdeleted:boolean
 }
 
-// export type student = {
-//   id: string;
-//   user:Types.ObjectId
-//   name: username;
-//   gender: 'male' | 'female'|'other';
-//   datofbirth: Date;
-//   email: string;
-//   avatar: string;
-//   contactnumber: string;
-//   emergencycontactnumber: string;
-//   bloodgroup: 'A+' | 'A-' | 'o+' | 'o-' | 'AB+' | 'AB-';
-//   presenaddress: string;
-//   permanenetaddress: string;
-//   guardian: guardian;
-//   localguardian: Localguardian;
-//   profileimage?: string;
-//   admissionsemester:Types.ObjectId;
-//   academicdepartment:Types.ObjectId;
-//   isdeleted:boolean
 
-  
-};
