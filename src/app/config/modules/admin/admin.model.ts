@@ -24,47 +24,49 @@ const bloodGroupValues = [
 const adminschema = new Schema<Tadmin>(
   {
     id: {
-      Type: String,
+      type: String,
       required: [true, 'Id is required'],
       unique: true,
     },
     user: {
-      Type: Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       required: [true, 'userid must be requried'],
       unique: true,
       ref: 'user',
     },
     name: usernameschema,
     gender: {
-      Type: String,
+      type: String,
       enum: ['male', 'female', 'others'],
       required: [true, 'gencer is required'],
     },
-    designation: String,
+    designation: {
+        Type:String
+    },
     dateofbirth: {
-      Type: Date,
+      type: Date,
     },
     email: {
-      Type: String,
+      type: String,
     },
     contactno: {
-      Type: String,
+      type: String,
     },
     emergencycontactno: {
-      Type: String,
+      type: String,
     },
     bloodgroup: {
-      Type: String,
+      type: String,
       enum: bloodGroupValues,
     },
     presentaddress: {
-      Type: String,
+      type: String,
     },
     permanentaddress: {
-      Type: String,
+      type: String,
     },
     isdeleted: {
-      Type: Boolean,
+      type: Boolean,
     },
   },
   {
