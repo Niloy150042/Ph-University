@@ -9,7 +9,6 @@ const usernameschema = new Schema<Tusername>({
     Type: String,
   },
 });
-
 const bloodGroupValues = [
   'A+',
   'A-',
