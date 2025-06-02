@@ -8,7 +8,7 @@ const laststudentid = async (semester: Tacademic_semester) => {
     .findOne(
       {
         role: 'student',
-        id: { $regex: `^${semesterPrefix}` }, // Only match IDs starting with this semester+code
+        id: { $regex: `${semesterPrefix}` }, // Only match IDs starting with this semester+code
       },
       { id: 1, _id: 0 }
     )
@@ -21,6 +21,7 @@ const laststudentid = async (semester: Tacademic_semester) => {
 export const generatestudentid = async (semester: Tacademic_semester) => {
   const currentid = (0).toString().padStart(4, '0'); // 0000
   const lastenrlledstudentid = await laststudentid(semester);
+  console.log(lastenrlledstudentid);
 
   if (lastenrlledstudentid) {
     // Same semester, increment the last 4 digits

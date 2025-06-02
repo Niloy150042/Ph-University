@@ -14,11 +14,13 @@ const createstudentintodb = async (student: student, password: string) => {
   userdata.password = password || (process.env.DEFAULT_PASS as string);
   //   menually generated id
 
-  userdata.role = 'student';
+  userdata.role ='student';
 
   const admissionsemester = await semestermodel.findById(
     student.admissionsemester,
   );
+
+  console.log(admissionsemester);
 
   // creating transaction and rollback
 
@@ -30,8 +32,9 @@ const createstudentintodb = async (student: student, password: string) => {
     userdata.id = await generatestudentid(
       admissionsemester as Tacademic_semester,
     );
+
     // starting transaction 1
-    const newuser = await usermodel.create([userdata], { session });
+    const newuser = await usermodel.create([userdata],{session});
     if (!newuser) {
       throw new Error('user is not created successflly');
     }
@@ -52,33 +55,32 @@ const createstudentintodb = async (student: student, password: string) => {
   //   create a student
 };
 
-const deleteuserfromdb = async (id:string) => {
+const deleteuserfromdb = async (id: string) => {
   // session initialization
   const session = await mongoose.startSession();
- try {
+  try {
     session.startTransaction();
     const deleteuser = await usermodel.findOneAndUpdate(
-      {id:Number(id)},
-     {$set:{isdeleted:true}},
-      {new:true, session},    
+      { id: Number(id) },
+      { $set: { isdeleted: true } },
+      { new: true, session },
     );
     if (!deleteuser) {
       throw new Error('user is not deleted ');
     }
 
     const deletestudent = await studentmodel.findOneAndUpdate(
-      { id:Number(id) },
-      {$set:{isdeleted:true}},
-      { new:true, session },
+      { id: Number(id) },
+      { $set: { isdeleted: true } },
+      { new: true, session },
     );
-  
+
     if (!deletestudent) {
       throw new Error('student is not deleted');
     }
     await session.commitTransaction();
     await session.endSession();
-  return deletestudent
-    
+    return deletestudent;
   } catch (err) {
     if (session.inTransaction()) {
       await session.abortTransaction(); // ✅ Abort only if session is still active
