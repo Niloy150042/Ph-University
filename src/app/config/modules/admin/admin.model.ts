@@ -1,14 +1,29 @@
 import { model, Schema } from 'mongoose';
-import { Tadmin, Tusername } from './admin.interface';
+import { Tadmin } from './admin.interface';
+import bcrypt from 'bcrypt'
 
-const usernameschema = new Schema<Tusername>({
-  firstname: {
-    Type: String,
+
+
+// const usernameschema = new Schema<Tusername>({
+//   firstname: {
+//     type: String,
+//   },
+//   lastname: {
+//     type: String,
+//   },
+// });
+const adminname={
+  firstname:{
+    type:String,
+    require:true
   },
-  lastname: {
-    Type: String,
-  },
-});
+  lastname:{
+    type:String,
+    require:true
+  }
+}
+
+
 const bloodGroupValues = [
   'A+',
   'A-',
@@ -24,25 +39,26 @@ const adminschema = new Schema<Tadmin>(
   {
     id: {
       type: String,
-      required: [true, 'Id is required'],
       unique: true,
     },
-    
+   password:{
+    type:String,
+    unique:[true,'this password is already exist']
+   },
     // user: {
     //   type: Schema.Types.ObjectId,
     //   required: [true,'userid must be requried'],
     //   unique: true,
     //   ref: 'user',
     // },
-
-    name: usernameschema,
+    name: adminname,
     gender: {
       type: String,
       enum: ['male', 'female', 'others'],
-      required: [true, 'gencer is required'],
+      // required: [true, 'gender is required'],
     },
     designation: {
-        Type:String
+      type: String,
     },
     dateofbirth: {
       type: Date,
@@ -75,4 +91,15 @@ const adminschema = new Schema<Tadmin>(
   },
 );
 
-export const adminmodel = model <Tadmin>('admin',adminschema)
+adminschema.pre('save',async function (next){
+  const saltround=10
+  const hashpassword= await bcrypt.hash(this.password,saltround)
+  this.password = hashpassword
+  next()
+})
+
+adminschema.post('save',async function(){
+  this.password=''
+
+})
+export const adminmodel = model<Tadmin>('admin', adminschema);

@@ -20,4 +20,5 @@ export type Tadmin = {
   presentaddress: string;
   permanentaddress: string;
   isdeleted: boolean;
+  password:string
 };
