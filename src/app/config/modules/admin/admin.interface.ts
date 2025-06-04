@@ -18,7 +18,7 @@ type Tbloodgroup =
 
 export type  Tadmin ={
     id :string,
-    user:Types.ObjectId
+    // user:Types.ObjectId
     name:Tusername
     gender : Tgender
     designation :string

@@ -20,7 +20,7 @@ const createstudentintodb = async (student: student, password: string) => {
     student.admissionsemester,
   );
 
-  console.log(admissionsemester);
+  // console.log(admissionsemester);
 
   // creating transaction and rollback
 

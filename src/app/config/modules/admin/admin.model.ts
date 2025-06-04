@@ -27,12 +27,14 @@ const adminschema = new Schema<Tadmin>(
       required: [true, 'Id is required'],
       unique: true,
     },
-    user: {
-      type: Schema.Types.ObjectId,
-      required: [true, 'userid must be requried'],
-      unique: true,
-      ref: 'user',
-    },
+    
+    // user: {
+    //   type: Schema.Types.ObjectId,
+    //   required: [true,'userid must be requried'],
+    //   unique: true,
+    //   ref: 'user',
+    // },
+
     name: usernameschema,
     gender: {
       type: String,
