@@ -10,7 +10,6 @@ import offered_course_router from '../modules/offered_course/offered_course.rout
 import authrouter from '../modules/Authentication/auth.route';
 import adminrouter from '../modules/admin/admin.route';
 
-
 const router = express.Router();
 
 const modulerouter = [
