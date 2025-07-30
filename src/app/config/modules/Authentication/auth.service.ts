@@ -1,7 +1,7 @@
 import { user } from '../user.model';
 import { Tloginuser } from './auth.interface';
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken'
+import jwt from 'jsonwebtoken';
 
 const loginuser = async (payload: Tloginuser) => {
   const User = await user
@@ -20,25 +20,32 @@ const loginuser = async (payload: Tloginuser) => {
     throw new Error('this user is blocked');
   }
   // password comparison
-  const ispasswordmatched = await bcrypt.compare(
-    payload?.password,
-    User?.password,
+  // const ispasswordmatched = await bcrypt.compare(
+  //   payload?.password,
+  //   User?.password,
+  // );
+  // if (!ispasswordmatched) {
+  //   throw new Error('password does not matched ');
+  // }
+// creating JWT token from server to client 
+  const jwtpayload = {
+    id: User.id,
+    userstatus: User.status,
+  };
+
+  const accesstoken = jwt.sign(
+    {
+      data: jwtpayload,
+    },
+    process.env.JWT_ACCESS_SECRET as string,
+    { expiresIn: '10d' },
   );
-  if (!ispasswordmatched) {
-    throw new Error('password does not matched ');
-  }
 
-  const jwtpayload ={
-    id:User.id,
-    userstatus :User.status
-
-  }
+  return {
+    accesstoken,
+    Needpasswordchange: User?.needpasswordchange,
+  };
   
-jwt.sign({
-  data: jwtpayload
-}, 'secret', { expiresIn: 60 * 60 });
-
-  return {};
 };
 
 export const authservice = {
