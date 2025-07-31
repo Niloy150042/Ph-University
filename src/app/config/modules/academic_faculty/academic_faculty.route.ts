@@ -2,6 +2,7 @@ import express from 'express';
 import myarmymiddlware from '../utils/validationrequest';
 import { faculty_validation } from './academic_faculty.validation';
 import { facultycontroller } from './academic_faculty.controller';
+import auth from '../utils/auth';
 
 const facultyrouter = express.Router();
 
@@ -11,7 +12,7 @@ facultyrouter.post(
   facultycontroller.createacademicfaculty,
 );
 
-facultyrouter.get('/get-faculties', facultycontroller.getfaculties);
+facultyrouter.get('/get-faculties',auth(), facultycontroller.getfaculties);
 
 facultyrouter.get(
   '/get-single-faculty/:id',

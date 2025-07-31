@@ -1,13 +1,16 @@
+// auth middleware
 import { NextFunction, Request, Response } from 'express';
-import { AnyZodObject } from 'zod';
 import asynccatch from './catchasync';
 
-const myarmymiddlware = (schema: AnyZodObject) => {
+const auth = () =>{
   return asynccatch(async (req: Request, res: Response, next: NextFunction) => {
-    // console.log(req.body);
-    await schema.parseAsync(req.body);
+    const token = req.headers.authorization;
+
+    if (!token) {
+      throw new Error('Authorization is not granted ');
+    }
     next();
   });
 };
 
-export default myarmymiddlware;
+export default auth;
