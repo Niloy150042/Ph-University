@@ -1,6 +1,5 @@
 import { user } from '../user.model';
 import { Tloginuser } from './auth.interface';
-import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
 const loginuser = async (payload: Tloginuser) => {
@@ -27,10 +26,11 @@ const loginuser = async (payload: Tloginuser) => {
   // if (!ispasswordmatched) {
   //   throw new Error('password does not matched ');
   // }
-// creating JWT token from server to client 
+  // creating JWT token from server to client
   const jwtpayload = {
     id: User.id,
     userstatus: User.status,
+    role: User.role,
   };
 
   const accesstoken = jwt.sign(
@@ -45,7 +45,6 @@ const loginuser = async (payload: Tloginuser) => {
     accesstoken,
     Needpasswordchange: User?.needpasswordchange,
   };
-  
 };
 
 export const authservice = {

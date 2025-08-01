@@ -11,6 +11,7 @@ const userschema = new Schema<Tuser>(
     password: {
       type: String,
       required: true,
+      select: 0  // query korle jate password ta na paooa jay 
     },
     needpasswordchange: {
       type: Boolean,

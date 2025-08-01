@@ -14,7 +14,7 @@ const createstudentintodb = async (student: student, password: string) => {
   userdata.password = password || (process.env.DEFAULT_PASS as string);
   //   menually generated id
 
-  userdata.role ='student';
+  userdata.role = 'student';
 
   const admissionsemester = await semestermodel.findById(
     student.admissionsemester,
@@ -34,7 +34,7 @@ const createstudentintodb = async (student: student, password: string) => {
     );
 
     // starting transaction 1
-    const newuser = await usermodel.create([userdata],{session});
+    const newuser = await usermodel.create([userdata], { session });
     if (!newuser) {
       throw new Error('user is not created successflly');
     }

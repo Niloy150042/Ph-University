@@ -1,3 +1,5 @@
+import { USER_ROLE } from "./user.constant";
+
 export type Tuser = {
   id: string;
   password?: string;
@@ -6,3 +8,5 @@ export type Tuser = {
   role: 'admin' | 'student' | 'faculty';
   status: 'in-progress' | 'blocked';
 };
+
+export type Tuserrole = keyof typeof USER_ROLE

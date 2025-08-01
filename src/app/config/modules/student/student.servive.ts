@@ -16,7 +16,7 @@ const getallstudentfromdb = async(query)=>{
     if(query.SearchTerm){
         searchterm=query.SearchTerm
     }
-    console.log(searchterm);
+    // console.log(searchterm);
     // console.log(searchterm);
 
   const studentsearchablefield =['email', 'name.firstname','name.lastname','gender','avatar','bloodgroup','persentaddress']
@@ -33,10 +33,12 @@ const getallstudentfromdb = async(query)=>{
     removefields.forEach((el)=>delete queryobj[el]);
 
 
-    console.log( 'query', query);
-    console.log( 'queryobject',queryobj);
+    // console.log( 'query', query);
+    // console.log( 'queryobject',queryobj);
 
-    const filterquery  = searchquery.find(queryobj) .populate('admissionsemester').populate({
+    const filterquery  = searchquery.find(queryobj) 
+    .populate({path:'user' ,select:'-password'}) // password jate show na kore 
+    .populate('admissionsemester').populate({
         path:'academicdepartment',
         populate:{
             path:'academic_faculty'

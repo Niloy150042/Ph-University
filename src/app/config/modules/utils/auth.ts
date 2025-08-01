@@ -2,8 +2,10 @@
 import { NextFunction, Request, Response } from 'express';
 import asynccatch from './catchasync';
 import jwt, { JwtPayload } from 'jsonwebtoken';
+import { Tuserrole } from '../user/user.interface';
 
-const auth = () => {
+
+const auth = (...requiredroles: Tuserrole[]) => {
   return asynccatch(async (req: Request, res: Response, next: NextFunction) => {
     const token = req.headers.authorization;
     if (!token) {
@@ -18,13 +20,20 @@ const auth = () => {
         if (err) {
           throw new Error('wrong token ');
         }
-     
-      req.user= decoded  as JwtPayload
+        const role = (decoded as JwtPayload).data.role;
+        // console.log(decoded);
+        console.log(role);
+
+        if (requiredroles && !requiredroles.includes(role)) {
+        
+          throw new Error('you are not authorized ');
+        }
+
+        req.user = decoded as JwtPayload;
+
+        next();
       },
     );
-
-   
-    next();
   });
 };
 
