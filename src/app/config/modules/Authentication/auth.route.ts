@@ -6,4 +6,7 @@ const authrouter = express.Router()
 
 authrouter.post('/login',myarmymiddlware(Authvalidation.loginvalidationschema),Authcontroller.loginguser)
 
+
+authrouter.post('/change-password',myarmymiddlware(Authvalidation.changepasswordvalidationschema),Authcontroller.loginguser)
+
 export default authrouter
