@@ -5,8 +5,8 @@ const loginvalidationschema = z.object({
     password:z.string({required_error:'password is required'})
 })
 const changepasswordvalidationschema = z.object({
-    oldpassword: z.string({required_error:'old password is required'}),
-    newpassword:z.string({required_error:'password is required'})
+    oldpassword:z.string({required_error:'old password is required'}),
+    newpassword:z.string({required_error:'newpassword is required'})
 })
 export const Authvalidation = {
     loginvalidationschema,

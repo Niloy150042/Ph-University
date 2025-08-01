@@ -1,6 +1,6 @@
 import { user } from '../user.model';
 import { Tloginuser } from './auth.interface';
-import jwt from 'jsonwebtoken';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 
 const loginuser = async (payload: Tloginuser) => {
   const User = await user
@@ -31,6 +31,7 @@ const loginuser = async (payload: Tloginuser) => {
     id: User.id,
     userstatus: User.status,
     role: User.role,
+
   };
 
   const accesstoken = jwt.sign(
@@ -46,7 +47,16 @@ const loginuser = async (payload: Tloginuser) => {
     Needpasswordchange: User?.needpasswordchange,
   };
 };
+const changepassword =async(userdata:JwtPayload,payload:{oldpassword:string,newpassword:string}) => {
+  const result = await user.findOneAndUpdate({
+  id :userdata.id,
+  role:userdata.role
+  })
+
+ 
+};
 
 export const authservice = {
   loginuser,
+  changepassword,
 };
