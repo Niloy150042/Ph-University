@@ -1,6 +1,7 @@
 import { user } from '../user.model';
 import { Tloginuser } from './auth.interface';
 import jwt, { JwtPayload } from 'jsonwebtoken';
+import bcrypt from 'bcr'
 
 const loginuser = async (payload: Tloginuser) => {
   const User = await user
@@ -31,7 +32,6 @@ const loginuser = async (payload: Tloginuser) => {
     id: User.id,
     userstatus: User.status,
     role: User.role,
-
   };
 
   const accesstoken = jwt.sign(
@@ -47,13 +47,40 @@ const loginuser = async (payload: Tloginuser) => {
     Needpasswordchange: User?.needpasswordchange,
   };
 };
-const changepassword =async(userdata:JwtPayload,payload:{oldpassword:string,newpassword:string}) => {
-  const result = await user.findOneAndUpdate({
-  id :userdata.id,
-  role:userdata.role
-  })
 
- 
+const changepassword = async (
+  userdata: JwtPayload,
+  payload: { oldpassword: string; newpassword: string },
+) => {
+  const userid = userdata.data.id;
+  const isuserexist = await user
+    .findOne({ id: userid })
+    .select(
+      '_id id password needpasswordchange isdeleted role status createdAt updatedAt',
+    );
+
+  if (!isuserexist) {
+    throw new Error('This user is not exist in database');
+  }
+
+  const ispasswordmatched = await bcrypt.compare(
+    payload?.oldpassword,
+    isuserexist?.password,
+  );
+  if (!ispasswordmatched) {
+    throw new Error('password does not matched ');
+  }
+
+  const result = await user.findOneAndUpdate(
+    {
+      id: userdata.id,
+      role: userdata.role,
+    },
+    {
+      password: payload.newpassword,
+    },
+  );
+  return result 
 };
 
 export const authservice = {

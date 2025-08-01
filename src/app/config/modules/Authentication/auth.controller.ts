@@ -14,16 +14,14 @@ const loginguser = asynccatch(async (req, res) => {
 });
 
 const changepassword = asynccatch(async (req, res) => {
-  console.log(req.user, req.body);
   const {...passworddata} = req.body
   const userdata =req.user
-  const result = await authservice.changepassword(userdata,passworddata);
- 
-  sendresponse(res, {
+   await authservice.changepassword(userdata,passworddata);
+   sendresponse(res, {
     statuscode: status.OK,
     success: true,
-    message: 'user loged in successfully',
-    data: result,
+    message: 'password updated successfully',
+    data: null,
   });
 });
 
