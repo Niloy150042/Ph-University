@@ -1,7 +1,7 @@
 import { user } from '../user.model';
 import { Tloginuser } from './auth.interface';
 import jwt, { JwtPayload } from 'jsonwebtoken';
-import bcrypt from 'bcr'
+import bcrypt from 'bcrypt';
 
 const loginuser = async (payload: Tloginuser) => {
   const User = await user
@@ -80,7 +80,7 @@ const changepassword = async (
       password: payload.newpassword,
     },
   );
-  return result 
+  return result;
 };
 
 export const authservice = {
