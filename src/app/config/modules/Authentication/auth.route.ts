@@ -13,9 +13,16 @@ authrouter.post(
 );
 
 authrouter.post(
-  '/change-password',auth(USER_ROLE.admin, USER_ROLE.faculty,USER_ROLE.student),
+  '/change-password',
+  auth(USER_ROLE.admin, USER_ROLE.faculty, USER_ROLE.student),
   myarmymiddlware(Authvalidation.changepasswordvalidationschema),
   Authcontroller.changepassword,
+);
+
+authrouter.post(
+  '/refresh-token',
+  myarmymiddlware(Authvalidation.refreshtokenvalidationschema),
+  Authcontroller.refreshToken,
 );
 
 export default authrouter;

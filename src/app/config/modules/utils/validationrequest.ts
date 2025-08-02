@@ -4,8 +4,9 @@ import asynccatch from './catchasync';
 
 const myarmymiddlware = (schema: AnyZodObject) => {
   return asynccatch(async (req: Request, res: Response, next: NextFunction) => {
-    // console.log(req.body);
-    await schema.parseAsync(req.body);
+    
+    await schema.parseAsync({body:req.body, cookies: req.cookies});
+
     next();
   });
 };

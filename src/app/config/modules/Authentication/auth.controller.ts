@@ -30,7 +30,22 @@ const changepassword = asynccatch(async (req, res) => {
   });
 });
 
+const refreshToken = asynccatch(async (req, res) => {
+  const token = req.cookies?.refreshtoken
+  if(!token){
+    throw new Error ('there are no refresh token in cookie')
+  }
+ const result =  await authservice.refreshToken(token);
+   sendresponse(res, {
+    statuscode: status.OK,
+    success: true,
+    message: 'access token retrived successfully',
+    data: result,
+  });
+});
+
 export const Authcontroller = {
   loginguser,
   changepassword,
+  refreshToken
 };

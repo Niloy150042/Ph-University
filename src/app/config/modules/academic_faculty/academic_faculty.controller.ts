@@ -16,6 +16,7 @@ const createacademicfaculty = asynccatch(
 );
 
 const getfaculties = asynccatch(async (req: Request, res: Response) => {
+   
   const result = await facultyservie.getallfaculties();
   res.status(status.OK).send({
     success: true,

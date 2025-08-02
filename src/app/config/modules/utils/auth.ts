@@ -4,6 +4,7 @@ import asynccatch from './catchasync';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import { Tuserrole } from '../user/user.interface';
 
+
 const auth = (...requiredroles:Tuserrole[]) => {
   return asynccatch(async (req: Request, res: Response, next: NextFunction) => {
     const token = req.headers.authorization;

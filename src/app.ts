@@ -8,12 +8,14 @@ import cors from 'cors';
 import globalErrorHandler from './app/config/modules/utils/globalerrohandler';
 import notfound from './app/config/modules/utils/notfound';
 import router from './app/config/Routes/routes';
+import cookieParser from 'cookie-parser'
 
 
 const app: Application = express();
 
 app.use(express.json());
-app.use(cors());
+app.use(cors({origin:['http://localhost:5000']}));
+app.use(cookieParser())
 
 app.use('/api/v1',router)
 
