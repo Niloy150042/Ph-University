@@ -1,7 +1,8 @@
 import { user } from '../user.model';
 import { Tloginuser } from './auth.interface';
-import jwt, { JwtPayload } from 'jsonwebtoken';
+import  { JwtPayload } from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
+import { createtoken } from './auth.utils';
 
 const loginuser = async (payload: Tloginuser) => {
   const User = await user
@@ -33,17 +34,16 @@ const loginuser = async (payload: Tloginuser) => {
     userstatus: User.status,
     role: User.role,
   };
+// creating access token 
+  const accesstoken = createtoken(jwtpayload, process.env.JWT_ACCESS_SECRET as string,'10d')
 
-  const accesstoken = jwt.sign(
-    {
-      data: jwtpayload,
-    },
-    process.env.JWT_ACCESS_SECRET as string,
-    { expiresIn: '10d' },
-  );
+  // creating refresh token 
+  const refreshtoken =  createtoken(jwtpayload, process.env.JWT_ACCESS_SECRET as string,'10d')
+
 
   return {
     accesstoken,
+    refreshtoken,
     Needpasswordchange: User?.needpasswordchange,
   };
 };
