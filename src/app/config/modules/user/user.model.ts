@@ -10,7 +10,7 @@ const userschema = new Schema<Tuser>(
     },
      email:{
       type: String,
-      // required:true
+      required:true
     },
     password: {
       type: String,

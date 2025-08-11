@@ -46,6 +46,7 @@ const refreshToken = asynccatch(async (req, res) => {
 
 const forgetpassword = asynccatch(async(req,res)=>{
    const userid = req.body.id
+   
    const result = await authservice.forgetpasswordservice(userid)
     sendresponse(res, {
     statuscode: status.OK,

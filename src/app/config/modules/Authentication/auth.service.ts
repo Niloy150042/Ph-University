@@ -4,6 +4,7 @@ import { JwtPayload } from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import { createtoken } from './auth.utils';
 import jwt from 'jsonwebtoken';
+import { sendEmail } from '../utils/sendEmail';
 
 const loginuser = async (payload: Tloginuser) => {
   const User = await user
@@ -110,8 +111,8 @@ const refreshToken = async (token: string) => {
   return accesstoken;
 };
 
-const forgetpasswordservice = async (userid: string) => {
-  const isidexistindb = await user.findOne({ id: userid });
+const forgetpasswordservice = async (userid: string ) => {
+  const isidexistindb = await user.findOne({ id: userid }).select('_id id password email needpasswordchange isdeleted role status createdAt updatedAt');
   const User = isidexistindb;
   if (!isidexistindb) {
     throw new Error('this user is not exists in DB');
@@ -127,9 +128,8 @@ const forgetpasswordservice = async (userid: string) => {
     process.env.JWT_ACCESS_SECRET as string,
     '10d',
   );
-
   const resetpasslink = `http://localhost:5000?id=${User.id}&token=${resettoken}`;
-  return resetpasslink;
+  sendEmail('mehediislamniloy19@gmail.com',resetpasslink)
 };
 
 export const authservice = {
