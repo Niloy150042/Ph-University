@@ -8,10 +8,14 @@ const userschema = new Schema<Tuser>(
       type: String,
       // required:true
     },
+     email:{
+      type: String,
+      // required:true
+    },
     password: {
       type: String,
       required: true,
-      select: 0  // query korle jate password ta na paooa jay 
+     // query korle jate password ta na paooa jay 
     },
     needpasswordchange: {
       type: Boolean,
@@ -30,6 +34,7 @@ const userschema = new Schema<Tuser>(
       enum: ['in-progress', 'blocked'],
       default: 'in-progress',
     },
+    
   },
   {
     timestamps: true,

@@ -5,7 +5,7 @@ import sendresponse from "../utils/sendresponse";
 
 const createadmin = asynccatch(async(req:Request,res:Response)=>{
     const admindata = req.body
-    const password =admindata.password
+    const password =req.body.password
     const data = await adminservices.craeteadminintodb(admindata,password)
     sendresponse(res,{
         statuscode:201,

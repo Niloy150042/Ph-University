@@ -18,7 +18,8 @@ const bloodGroupValues = [
   'O-',
 ] as const;
 const adminvalidationschema = z.object({
-  id: z.string({ required_error: 'id is required' }).optional(),
+  body:z.object({
+    id: z.string({ required_error: 'id is required' }).optional(),
   // user: z.string({ required_error: 'id is required' }),
   name: adminusernamevalidation,
   gender: z.enum(gendervalues, { required_error: 'gender is required' }),
@@ -37,6 +38,7 @@ const adminvalidationschema = z.object({
     required_error: 'permanent  address is required',
   }),
   isdeleted: z.boolean().default(false),
+  })
 });
 
 export default adminvalidationschema;

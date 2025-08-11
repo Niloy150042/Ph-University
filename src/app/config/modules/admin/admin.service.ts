@@ -19,8 +19,9 @@ const craeteadminintodb = async (payload: Tadmin, password: string) => {
     adminid = `A-${String(lastadminid + 1).padStart(3, '0')}`;
   }
   const result = await adminmodel.create({ ...payload, password, id: adminid });
-
-  await usermodel.create(userdata);
+  // admin email 
+  const  email= payload.email
+  await usermodel.create({...userdata,email});
   return result;
 };
 export const adminservices = {

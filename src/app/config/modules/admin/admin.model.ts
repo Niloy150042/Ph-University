@@ -40,14 +40,10 @@ const adminschema = new Schema<Tadmin>(
     },
     password: {
       type: String,
-      unique: [true, 'this password is already exist'],
+      unique: [true,'this password is already exist'],
+      required:true
     },
-    // user: {
-    //   type: Schema.Types.ObjectId,
-    //   required: [true,'userid must be requried'],
-    //   unique: true,
-    //   ref: 'user',
-    // },
+   
     name: adminname,
     gender: {
       type: String,
