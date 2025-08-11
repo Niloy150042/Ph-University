@@ -1,9 +1,9 @@
 import { user } from '../user.model';
 import { Tloginuser } from './auth.interface';
-import  { JwtPayload } from 'jsonwebtoken';
+import { JwtPayload } from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import { createtoken } from './auth.utils';
-import jwt from 'jsonwebtoken'
+import jwt from 'jsonwebtoken';
 
 const loginuser = async (payload: Tloginuser) => {
   const User = await user
@@ -35,12 +35,19 @@ const loginuser = async (payload: Tloginuser) => {
     userstatus: User.status,
     role: User.role,
   };
-// creating access token 
-  const accesstoken = createtoken(jwtpayload, process.env.JWT_ACCESS_SECRET as string,'10d')
+  // creating access token
+  const accesstoken = createtoken(
+    jwtpayload,
+    process.env.JWT_ACCESS_SECRET as string,
+    '10d',
+  );
 
-  // creating refresh token 
-  const refreshtoken =  createtoken(jwtpayload, process.env.JWT_ACCESS_SECRET as string,'10d')
-
+  // creating refresh token
+  const refreshtoken = createtoken(
+    jwtpayload,
+    process.env.JWT_ACCESS_SECRET as string,
+    '10d',
+  );
 
   return {
     accesstoken,
@@ -84,24 +91,27 @@ const changepassword = async (
   return result;
 };
 
-const refreshToken = async(token:string)=>{
-  const decoded = jwt.verify(token,process.env.JWT_ACCESS_SECRET as string)
-  const {id,userstatus,role}=decoded
+const refreshToken = async (token: string) => {
+  const decoded = jwt.verify(token, process.env.JWT_ACCESS_SECRET as string);
+  const { id, userstatus, role } = decoded;
 
   const jwtpayload = {
     id,
     userstatus,
-    role
+    role,
   };
-// creating access token 
-  const accesstoken = createtoken(jwtpayload, process.env.JWT_ACCESS_SECRET as string,'10d')
+  // creating access token
+  const accesstoken = createtoken(
+    jwtpayload,
+    process.env.JWT_ACCESS_SECRET as string,
+    '10d',
+  );
 
-  return accesstoken
-
-
-}
+  return accesstoken;
+};
 
 export const authservice = {
   loginuser,
-  changepassword,refreshToken
+  changepassword,
+  refreshToken,
 };
