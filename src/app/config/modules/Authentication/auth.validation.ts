@@ -11,11 +11,21 @@ const changepasswordvalidationschema = z.object({
 
 const refreshtokenvalidationschema = z.object({
   cookies: z.object({
-    refreshToken: z.string({ required_error: 'refresh token is necessary' }).optional(),
+    refreshToken: z
+      .string({ required_error: 'refresh token is necessary' })
+      .optional(),
   }),
 });
+
+const forgetPasswordValidationschema = z.object({
+  body: z.object({
+    id: z.string({ required_error: 'User_id is required' }),
+  }),
+});
+
 export const Authvalidation = {
   loginvalidationschema,
   changepasswordvalidationschema,
   refreshtokenvalidationschema,
+  forgetPasswordValidationschema,
 };

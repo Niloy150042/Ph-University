@@ -27,8 +27,8 @@ authrouter.post(
 
 authrouter.post(
   '/forget-password',
-  myarmymiddlware(Authvalidation.refreshtokenvalidationschema),
-  Authcontroller.refreshToken,
+  myarmymiddlware(Authvalidation.forgetPasswordValidationschema),
+  Authcontroller.forgetpassword,
 );
 
 export default authrouter;

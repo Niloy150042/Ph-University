@@ -110,8 +110,31 @@ const refreshToken = async (token: string) => {
   return accesstoken;
 };
 
+const forgetpasswordservice = async (userid: string) => {
+  const isidexistindb = await user.findOne({ id: userid });
+  const User = isidexistindb;
+  if (!isidexistindb) {
+    throw new Error('this user is not exists in DB');
+  }
+  const jwtpayload = {
+    id: User.id,
+    userstatus: User.status,
+    role: User.role,
+  };
+  // creating access token
+  const accesstoken = createtoken(
+    jwtpayload,
+    process.env.JWT_ACCESS_SECRET as string,
+    '10d',
+  );
+
+  const resetpasslink = `http://localhost:5000?id=${User.id}&token=${accesstoken}`;
+  return resetpasslink;
+};
+
 export const authservice = {
   loginuser,
   changepassword,
   refreshToken,
+  forgetpasswordservice,
 };
