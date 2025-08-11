@@ -122,13 +122,13 @@ const forgetpasswordservice = async (userid: string) => {
     role: User.role,
   };
   // creating access token
-  const accesstoken = createtoken(
+  const resettoken = createtoken(
     jwtpayload,
     process.env.JWT_ACCESS_SECRET as string,
     '10d',
   );
 
-  const resetpasslink = `http://localhost:5000?id=${User.id}&token=${accesstoken}`;
+  const resetpasslink = `http://localhost:5000?id=${User.id}&token=${resettoken}`;
   return resetpasslink;
 };
 
