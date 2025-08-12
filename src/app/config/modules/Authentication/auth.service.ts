@@ -111,8 +111,13 @@ const refreshToken = async (token: string) => {
   return accesstoken;
 };
 
-const forgetpasswordservice = async (userid: string ) => {
-  const isidexistindb = await user.findOne({ id: userid }).select('_id id password email needpasswordchange isdeleted role status createdAt updatedAt').lean();
+const forgetpasswordservice = async (userid: string) => {
+  const isidexistindb = await user
+    .findOne({ id: userid })
+    .select(
+      '_id id password email needpasswordchange isdeleted role status createdAt updatedAt',
+    )
+    .lean();
   const User = isidexistindb;
   if (!isidexistindb) {
     throw new Error('this user is not exists in DB');
@@ -128,22 +133,48 @@ const forgetpasswordservice = async (userid: string ) => {
     process.env.JWT_ACCESS_SECRET as string,
     '10d',
   );
-  const resetpasslink =`http://localhost:5000?id=${User.id}&token=${resettoken}`;
+  const resetpasslink = `http://localhost:5000?id=${User.id}&token=${resettoken}`;
   console.log(resetpasslink);
-  sendEmail(User.email,resetpasslink)
+  sendEmail(User.email, resetpasslink);
 };
 
+const resetpasswrodservice = async (
+  payload: { id: string; newPassword: string },
+  token: string,
+) => {
+  const saltRounds = 10;
+  const { id, newPassword } = payload;
 
-const resetpasswrodservice= async(payload:{id:string,newPassword:string},token:string)=>{
-  const {id,newPassword}=payload
-  console.log(id,newPassword,token);
+  const decoded = jwt.verify(
+    token,
+    process.env.JWT_ACCESS_SECRET as string,
+  ) as JwtPayload;
 
+  if (id != decoded.data.id) {
+    throw new Error('you are forbidden');
+  }
 
-}
+  const newhashPassword = await bcrypt.hash(
+    newPassword,
+    saltRounds,
+    function (err, hash) {
+      // Store hash in your password DB.
+    },
+  );
+  await user.findOneAndUpdate(
+    {
+      id: decoded.data.id,
+      role: decoded.data.role,
+    },
+    {
+      password: newhashPassword,
+    },
+  );
+};
 export const authservice = {
   loginuser,
   changepassword,
   refreshToken,
   forgetpasswordservice,
-  resetpasswrodservice
+  resetpasswrodservice,
 };
