@@ -9,7 +9,7 @@ const auth = (...requiredroles:Tuserrole[]) => {
   return asynccatch(async (req: Request, res: Response, next: NextFunction) => {
     const token = req.headers.authorization;
     if (!token) {
-      throw new Error('Authorization is not granted ');
+      throw new Error('Authorization is not granted');
     }
    // if someone send the wrong token then justify
     jwt.verify(

@@ -6,7 +6,7 @@ import { studentmodel } from '../student/student.model';
 import { Tuser } from './user.interface';
 import usermodel from './user.model';
 import { generatestudentid } from './user.utils';
-import jwt, { JwtPayload } from 'jsonwebtoken'
+import jwt, { JwtPayload } from 'jsonwebtoken';
 import { adminmodel } from '../admin/admin.model';
 import { faculty_model } from '../academic_faculty/academic_faculty.model';
 
@@ -14,7 +14,7 @@ const createstudentintodb = async (student: student, password: string) => {
   const userdata: Partial<Tuser> = {};
 
   if (!student.email) {
-    throw new Error("Email is required for creating a student");
+    throw new Error('Email is required for creating a student');
   }
   userdata.email = student.email;
 
@@ -49,7 +49,6 @@ const createstudentintodb = async (student: student, password: string) => {
 
     await session.commitTransaction();
     return newstudent;
-
   } catch (err) {
     if (session.inTransaction()) {
       await session.abortTransaction(); // Fix 2: Proper rollback
@@ -94,25 +93,21 @@ const deleteuserfromdb = async (id: string) => {
   }
 };
 
-const getmeservice = async(token:string)=>{
- const decoded = jwt.verify(
-     token,
-     process.env.JWT_ACCESS_SECRET as string) as JwtPayload;
-  let result =null
-    if(decoded.data.role =='student'){
-      return result = await studentmodel.findOne({id:decoded.data.id})
-    }
-     if(decoded.data.role =='admin'){
-      return result = await adminmodel.findOne({id:decoded.data.id})
-    }
-     if(decoded.data.role =='faculty'){
-      return result = await faculty_model.findOne({id:decoded.data.id})
-    }
-
- 
-}
+const getmeservice = async (payload: JwtPayload) => {
+  let result = null;
+  if (payload.data.role == 'student') {
+    return (result = await studentmodel.findOne({ id: payload.data.id }));
+  }
+  if (payload.data.role == 'admin') {
+    return (result = await adminmodel.findOne({ id: payload.data.id }));
+  }
+  if (payload.data.role == 'faculty') {
+    return (result = await faculty_model.findOne({ id: payload.data.id }));
+  }
+};
 
 export const userservice = {
   createstudentintodb,
-  deleteuserfromdb,getmeservice
+  deleteuserfromdb,
+  getmeservice,
 };

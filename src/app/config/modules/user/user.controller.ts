@@ -38,8 +38,8 @@ const deletestudent = asynccatch(async (req, res) => {
 
 const getme =(asynccatch(async(req,res)=>{
   
-  const token= req.headers.authorization
-  const result = await userservice.getmeservice(token)
+  
+  const result = await userservice.getmeservice(req.user)
     res.status(status.OK).send({
     success:true,
     message:'this users information is retrived successfully',
