@@ -134,7 +134,7 @@ const forgetpasswordservice = async (userid: string) => {
     '10d',
   );
   const resetpasslink = `http://localhost:5000?id=${User.id}&token=${resettoken}`;
-  console.log(resetpasslink);
+  // console.log(resetpasslink);
   sendEmail(User.email, resetpasslink);
 };
 
@@ -153,14 +153,8 @@ const resetpasswrodservice = async (
   if (id != decoded.data.id) {
     throw new Error('you are forbidden');
   }
-
-  const newhashPassword = await bcrypt.hash(
-    newPassword,
-    saltRounds,
-    function (err, hash) {
-      // Store hash in your password DB.
-    },
-  );
+  console.log(newPassword);
+  const newhashPassword = await bcrypt.hash(newPassword, saltRounds);
   await user.findOneAndUpdate(
     {
       id: decoded.data.id,

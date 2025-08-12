@@ -10,8 +10,6 @@ import asynccatch from '../utils/catchasync';
 
 const createstudent = asynccatch (async (req, res) => {
   const { student, password } = req.body;
-
-  
     const result = await userservice.createstudentintodb(student, password);
 
     sendresponse(res, {
@@ -38,7 +36,18 @@ const deletestudent = asynccatch(async (req, res) => {
  }
 });
 
+const getme =(asynccatch(async(req,res)=>{
+  
+  const token= req.headers.authorization
+  const result = await userservice.getmeservice(token)
+    res.status(status.OK).send({
+    success:true,
+    message:'this users information is retrived successfully',
+    data:result 
+  })
+}))
+
 
 export const usercontroller = {
-  createstudent,deletestudent
+  createstudent,deletestudent,getme
 };

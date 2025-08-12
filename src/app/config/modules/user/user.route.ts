@@ -15,4 +15,9 @@ userrouter.post(
 
 userrouter.patch('/delete-student/:id',usercontroller.deletestudent)
 
+userrouter.get(
+  '/me',auth('student','admin','faculty'),
+  usercontroller.getme,
+);
+
 export default userrouter;

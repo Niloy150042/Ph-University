@@ -29,15 +29,15 @@ const getallstudent = catchasync(async (req, res, next) => {
     });
   
 })
-const getasinglestudentdata = catchasync(async (req, res, next:NextFunction) => {
-  
-    const { studentid } = req.params;
+const getasinglestudentdata = catchasync(async (req,res) => {
+    const  studentid  = req.params.id;
     const result = await studentservices.getasinglestudent(studentid);
     res.status(201).send({
       success: true,
       data: result,
+      message:'student information is retrived successfully'
     });
-    next(globalErrorHandler)
+    
    
 })
 

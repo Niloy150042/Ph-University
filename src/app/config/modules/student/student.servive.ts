@@ -77,8 +77,8 @@ return fieldfilterquery
 
 }
 
-const getasinglestudent =async(id)=>{
-    const result =await studentmodel.findOne({_id:id})
+const getasinglestudent =async(id:string)=>{
+    const result =await studentmodel.findOne({id})
     return result
 }
 

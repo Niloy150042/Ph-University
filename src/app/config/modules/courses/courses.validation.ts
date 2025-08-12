@@ -15,12 +15,14 @@ export const facultyvalidationschema = z.object({
 
 // Main course schema
 export const coursevalidationshcema = z.object({
-  title: z.string().min(1),
+  body:z.object({
+    title: z.string().min(1),
   prefix: z.string().min(1),
   code: z.number(),
   credits: z.number(),
   isdeleted: z.boolean().optional(),
   preRequisitecourse: z.array(prerequisiteCoursevalidationSchema).optional(),
+  })
 });
 
 const updatevalidationschema = coursevalidationshcema.partial()

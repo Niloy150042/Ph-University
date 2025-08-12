@@ -25,8 +25,9 @@ const localGuardianSchema = z.object({
 
 const studentvalidationSchema = z.object({
   
-  password:z.string().max(20,"password cant exceed 20 "),
-  student:z.object({
+  body:z.object({
+    password:z.string().max(20,"password cant exceed 20 "),
+   student:z.object({
     name: nameSchema,
     gender: z.enum(['male', 'female', 'other'], {
       required_error: 'Gender is required',
@@ -47,6 +48,7 @@ const studentvalidationSchema = z.object({
     profileimage: z.string(),
     isactive: z.enum(['active', 'blocked']).default('active'),
     admissionsemester:z.string(),
+  })
   })
 
   

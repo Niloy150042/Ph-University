@@ -6,23 +6,24 @@ import { studentmodel } from '../student/student.model';
 import { Tuser } from './user.interface';
 import usermodel from './user.model';
 import { generatestudentid } from './user.utils';
+import jwt, { JwtPayload } from 'jsonwebtoken'
+import { adminmodel } from '../admin/admin.model';
+import { faculty_model } from '../academic_faculty/academic_faculty.model';
 
 const createstudentintodb = async (student: student, password: string) => {
-  //    jodi postman /client theke password na diye default pass diye dey
   const userdata: Partial<Tuser> = {};
 
-  userdata.password = password || (process.env.DEFAULT_PASS as string);
-  //   menually generated id
+  if (!student.email) {
+    throw new Error("Email is required for creating a student");
+  }
+  userdata.email = student.email;
 
+  userdata.password = password || (process.env.DEFAULT_PASS as string);
   userdata.role = 'student';
 
   const admissionsemester = await semestermodel.findById(
     student.admissionsemester,
   );
-
-  // console.log(admissionsemester);
-
-  // creating transaction and rollback
 
   const session = await mongoose.startSession();
 
@@ -33,26 +34,30 @@ const createstudentintodb = async (student: student, password: string) => {
       admissionsemester as Tacademic_semester,
     );
 
-    // starting transaction 1
     const newuser = await usermodel.create([userdata], { session });
     if (!newuser) {
-      throw new Error('user is not created successflly');
+      throw new Error('user is not created successfully');
     }
+
     student.id = newuser[0].id;
     student.user = newuser[0]._id;
-    // starting second transaction
+
     const newstudent = await studentmodel.create([student], { session });
     if (!newstudent) {
-      throw new Error('student is not created successflly');
+      throw new Error('student is not created successfully');
     }
-    session.commitTransaction();
-    session.endSession();
+
+    await session.commitTransaction();
     return newstudent;
+
   } catch (err) {
-    session.endSession();
+    if (session.inTransaction()) {
+      await session.abortTransaction(); // Fix 2: Proper rollback
+    }
     throw new Error(`transaction is aborted ${err}`);
+  } finally {
+    session.endSession(); // Always close session
   }
-  //   create a student
 };
 
 const deleteuserfromdb = async (id: string) => {
@@ -89,7 +94,25 @@ const deleteuserfromdb = async (id: string) => {
   }
 };
 
+const getmeservice = async(token:string)=>{
+ const decoded = jwt.verify(
+     token,
+     process.env.JWT_ACCESS_SECRET as string) as JwtPayload;
+  let result =null
+    if(decoded.data.role =='student'){
+      return result = await studentmodel.findOne({id:decoded.data.id})
+    }
+     if(decoded.data.role =='admin'){
+      return result = await adminmodel.findOne({id:decoded.data.id})
+    }
+     if(decoded.data.role =='faculty'){
+      return result = await faculty_model.findOne({id:decoded.data.id})
+    }
+
+ 
+}
+
 export const userservice = {
   createstudentintodb,
-  deleteuserfromdb,
+  deleteuserfromdb,getmeservice
 };
