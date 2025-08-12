@@ -31,4 +31,10 @@ authrouter.post(
   Authcontroller.forgetpassword,
 );
 
+authrouter.post(
+  '/reset-password',
+  myarmymiddlware(Authvalidation.resetpasswordvalidationschema),
+  Authcontroller.resetpassword,
+);
+
 export default authrouter;

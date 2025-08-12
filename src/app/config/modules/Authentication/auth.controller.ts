@@ -57,9 +57,23 @@ const forgetpassword = asynccatch(async(req,res)=>{
 
 })
 
+
+const resetpassword = asynccatch(async(req,res)=>{
+   const token= req.headers.authorization
+   const result = await authservice.resetpasswrodservice(req.body,token)
+    sendresponse(res, {
+    statuscode: status.OK,
+    success: true,
+    message: 'password is reset successfully',
+    data: result,
+  });
+
+})
+
 export const Authcontroller = {
   loginguser,
   changepassword,
   refreshToken,
-  forgetpassword
+  forgetpassword,
+  resetpassword
 };

@@ -112,7 +112,7 @@ const refreshToken = async (token: string) => {
 };
 
 const forgetpasswordservice = async (userid: string ) => {
-  const isidexistindb = await user.findOne({ id: userid }).select('_id id password email needpasswordchange isdeleted role status createdAt updatedAt');
+  const isidexistindb = await user.findOne({ id: userid }).select('_id id password email needpasswordchange isdeleted role status createdAt updatedAt').lean();
   const User = isidexistindb;
   if (!isidexistindb) {
     throw new Error('this user is not exists in DB');
@@ -128,13 +128,22 @@ const forgetpasswordservice = async (userid: string ) => {
     process.env.JWT_ACCESS_SECRET as string,
     '10d',
   );
-  const resetpasslink = `http://localhost:5000?id=${User.id}&token=${resettoken}`;
-  sendEmail('mehediislamniloy19@gmail.com',resetpasslink)
+  const resetpasslink =`http://localhost:5000?id=${User.id}&token=${resettoken}`;
+  console.log(resetpasslink);
+  sendEmail(User.email,resetpasslink)
 };
 
+
+const resetpasswrodservice= async(payload:{id:string,newPassword:string},token:string)=>{
+  const {id,newPassword}=payload
+  console.log(id,newPassword,token);
+
+
+}
 export const authservice = {
   loginuser,
   changepassword,
   refreshToken,
   forgetpasswordservice,
+  resetpasswrodservice
 };
