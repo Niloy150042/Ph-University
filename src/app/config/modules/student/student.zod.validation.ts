@@ -45,7 +45,7 @@ const studentvalidationSchema = z.object({
     permanenetaddress: z.string(),
     guardian: guardianSchema,
     localguardian: localGuardianSchema,
-    profileimage: z.string(),
+    profileimage: z.string().optional(),
     isactive: z.enum(['active', 'blocked']).default('active'),
     admissionsemester:z.string(),
   })

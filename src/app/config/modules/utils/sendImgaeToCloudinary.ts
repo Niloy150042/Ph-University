@@ -1,7 +1,8 @@
 import { v2 as cloudinary } from 'cloudinary';
 import multer from 'multer';
 import path from 'path';
-export const sendImageToCloudinary = async () => {
+import fs from 'fs/promises';
+export const sendImageToCloudinary = async (imagename:string,path:string) => {
   try {
     cloudinary.config({
       cloud_name: 'djxof3774',
@@ -10,15 +11,24 @@ export const sendImageToCloudinary = async () => {
     });
 
     const uploadResult = await cloudinary.uploader.upload(
-      'https://res.cloudinary.com/demo/image/upload/getting-started/shoes.jpg',
+      path,
       {
-        public_id: 'shoes',
+        public_id: imagename,
       },
+
+ 
     );
-    // console.log(uploadResult);
-  } catch (err) {
+     await fs.unlink(path);
+ 
+          return uploadResult
+    
+    
+  }
+
+  catch (err) {
     console.log(err);
   }
+
 };
 
 
