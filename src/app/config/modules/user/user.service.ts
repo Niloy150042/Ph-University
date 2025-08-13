@@ -9,6 +9,7 @@ import { generatestudentid } from './user.utils';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import { adminmodel } from '../admin/admin.model';
 import { faculty_model } from '../academic_faculty/academic_faculty.model';
+import { sendImageToCloudinary } from '../utils/sendImgaeToCloudinary';
 
 const createstudentintodb = async (student: student, password: string) => {
   const userdata: Partial<Tuser> = {};
@@ -33,7 +34,8 @@ const createstudentintodb = async (student: student, password: string) => {
     userdata.id = await generatestudentid(
       admissionsemester as Tacademic_semester,
     );
-
+    // hosting profileimage url to cloudinary ->
+    sendImageToCloudinary()
     const newuser = await usermodel.create([userdata], { session });
     if (!newuser) {
       throw new Error('user is not created successfully');
