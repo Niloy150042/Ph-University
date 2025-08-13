@@ -6,7 +6,6 @@ import asynccatch from '../utils/catchasync';
 // following dry principle
 
 const createstudent = asynccatch(async (req, res) => {
-  console.log(req.file);
   const { student, password } = req.body;
 
   const result = await userservice.createstudentintodb(student, password);
