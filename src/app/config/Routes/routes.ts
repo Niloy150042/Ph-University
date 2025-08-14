@@ -9,6 +9,7 @@ import semester_registarion_router from '../modules/semester_registration/semest
 import offered_course_router from '../modules/offered_course/offered_course.route';
 import adminrouter from '../modules/admin/admin.route';
 import authrouter from '../modules/Authentication/auth.route';
+import { enrolledCourseRouter } from '../modules/enrolledCourses/enrolledCourses.route';
 
 const router = express.Router();
 
@@ -53,7 +54,12 @@ const modulerouter = [
     path: '/admin',
     route: adminrouter,
   },
+   {
+    path: '/enrolled-course',
+    route: enrolledCourseRouter,
+  },
 ];
+
 modulerouter.forEach(route => router.use(route.path, route.route));
 
 // router.use('/students',studentroutes), router.use('/users',userroutes)
