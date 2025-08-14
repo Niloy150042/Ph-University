@@ -47,7 +47,7 @@ const createofferedcouse = async(payload:Tofferedcourse)=>{
 
     const assignschedules = await offerecoursemodel.find({semesterregistration,days}).
     select('days startTime endTime')
-    console.log(assignschedules);
+
     
     const newschedules={
       days,startTime,endTime

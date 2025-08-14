@@ -51,7 +51,7 @@ const enrolledCourseSchema = new Schema<TenrolledCourses>({
 
   isEnrolled: { type: Boolean, default: false },
   courseMarks: { type: courseMarksSchema },
-  grade: { type: String, enum: ['A','B','C','D','E','F','N/A'], default: null },
+  grade: { type: String, enum: ['A','B','C','D','E','F','N/A'], default: 'NA' },
   gradePoint: { type: Number, min:0,max:4, default: 0 },
   iscompleted: { type: Boolean, default: false },
 });

@@ -4,7 +4,8 @@ import { enrolledCourseServie } from './enrolledCourses.service';
 import status from 'http-status';
 
 const createEnrolledCourse = asynccatch(async (req: Request, res: Response) => {
-  const result = await enrolledCourseServie.createEnrolledCourseintoDB();
+  const userid=req.user.data.id
+  const result = await enrolledCourseServie.createEnrolledCourseintoDB(userid,req.body);
   res.status(status.OK).send({
     success: true,
     message: ' Student enrolled intto the offerd course successfully',
