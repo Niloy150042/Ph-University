@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 const cerateEnrolledCourseValidationSchema = z.object({
   body: z.object({
-    offeredCourse: z.string(),
+    offeredcourse: z.string(),
   }),
 });
 

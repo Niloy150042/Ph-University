@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import { offerecoursemodel } from '../offered_course/offered_course.model';
 import { studentmodel } from '../student/student.model';
 import { TenrolledCourses } from './enrolledCourses.interface';
@@ -7,37 +8,76 @@ const createEnrolledCourseintoDB = async (
   userid: string,
   payload: TenrolledCourses,
 ) => {
-  const { offeredcourse } = payload;
+  const session = await mongoose.startSession();
+  try {
+    const { offeredcourse } = payload;
+    // using transaction and rollback
 
-  const isofferedCourseExists = await offerecoursemodel.findById({
-    id: offeredcourse,
-  });
-  if (!isofferedCourseExists) {
-    throw new Error('offerd course is not exists in DB');
+    session.startTransaction();
+
+    const isofferedCourseExists = await offerecoursemodel.findById({
+      _id: offeredcourse,
+    });
+    if (!isofferedCourseExists) {
+      throw new Error('offerd course is not exists in DB');
+    }
+
+    if (isofferedCourseExists?.maxcapacity >= 70) {
+      throw new Error('Offered course room is full');
+    }
+
+    const isstudentexists = await studentmodel.findOne({ id: userid });
+    if (!isstudentexists) {
+      throw new Error('this student is not exists ');
+    }
+
+    // checking if the student is already enrolled or not
+
+    const isstudentalreadyenrolled = await EnrolledCourse.findOne({
+      semesterRegistration: isofferedCourseExists.semesterregistration,
+      academicSemester: isofferedCourseExists.academicsemester,
+      student: isstudentexists._id,
+    });
+
+    if (isstudentalreadyenrolled) {
+      throw new Error('this student has already enrolled to the course');
+    }
+
+    const result = await EnrolledCourse.create(
+      [
+        {
+          semesterRegistration: isofferedCourseExists.semesterregistration,
+          academicSemester: isofferedCourseExists.academicsemester,
+          academicFaculty: isofferedCourseExists.academic_faculty,
+          academicDepartment: isofferedCourseExists.academic_department,
+          offeredcourse: offeredcourse,
+          course: isofferedCourseExists.course,
+          student: isstudentexists._id,
+          faculty: isofferedCourseExists.academic_faculty,
+          isEnrolled: true,
+          iscompleted: false,
+        },
+      ],
+      { session },
+    );
+
+    const maxcapacity = isofferedCourseExists.maxcapacity - 1;
+    await offerecoursemodel.findByIdAndUpdate(
+      offeredcourse,
+      {
+        maxcapacity: maxcapacity - 1,
+      },
+      { session },
+    );
+    // amar write operation ekhanei shesh hoise ... tai commit ...
+    await session.commitTransaction();
+    return result;
+  } catch (err) {
+    await session.abortTransaction();
+    throw new Error(`transaction is abborted -${err}`);
+  } finally {
+    session.endSession();
   }
-
-  if (isofferedCourseExists?.maxcapacity <= 70) {
-    throw new Error('Offered course room is full');
-  }
-
-  const isstudentexists = await studentmodel.findById({ id: userid });
-  if (!isstudentexists) {
-    throw new Error('this student is not exists ');
-  }
-
-  // checking if the student is already enrolled or not
-
-  const isstudentalreadyenrolled = await EnrolledCourse.find({
-    semesterRegistration: isofferedCourseExists.semesterregistration,
-    academicSemester: isofferedCourseExists.academicsemester,
-    student: isstudentexists._id,
-  });
-  if (isstudentalreadyenrolled) {
-    throw new Error('this student has already enrolled to the course');
-  }
-
-
-  
 };
 
 export const enrolledCourseServie = {

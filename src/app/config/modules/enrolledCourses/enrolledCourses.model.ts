@@ -47,13 +47,32 @@ const enrolledCourseSchema = new Schema<TenrolledCourses>({
   },
   course: { type: Schema.Types.ObjectId, ref: 'course', required: true },
   student: { type: Schema.Types.ObjectId, ref: 'student', required: true },
-  faculty: { type: Schema.Types.ObjectId, ref: 'academicfaculty', required: true },
+  faculty: {
+    type: Schema.Types.ObjectId,
+    ref: 'academicfaculty',
+    required: true,
+  },
 
   isEnrolled: { type: Boolean, default: false },
-  courseMarks: { type: courseMarksSchema },
-  grade: { type: String, enum: ['A','B','C','D','E','F','N/A'], default: 'NA' },
-  gradePoint: { type: Number, min:0,max:4, default: 0 },
+  courseMarks: {
+    type: courseMarksSchema,
+    default: {
+      classTest1: 0,
+      midTerm: 0,
+      classTest2: 0,
+      finalTerm: 0,
+    },
+  },
+  grade: {
+    type: String,
+    enum: ['A', 'B', 'C', 'D', 'E', 'F', 'NA'],
+    default: 'NA',
+  },
+  gradePoint: { type: Number, min: 0, max: 4, default: 0 },
   iscompleted: { type: Boolean, default: false },
 });
-const EnrolledCourse = mongoose.model<TenrolledCourses>('EnrolledCourse',enrolledCourseSchema)
-export default EnrolledCourse
+const EnrolledCourse = mongoose.model<TenrolledCourses>(
+  'EnrolledCourse',
+  enrolledCourseSchema,
+);
+export default EnrolledCourse;
