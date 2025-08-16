@@ -3,6 +3,7 @@ import { offerecoursemodel } from '../offered_course/offered_course.model';
 import { studentmodel } from '../student/student.model';
 import { TenrolledCourses } from './enrolledCourses.interface';
 import EnrolledCourse from './enrolledCourses.model';
+import semesterregistraionmodel from '../semester_registration/semester_registration.model';
 
 const createEnrolledCourseintoDB = async (
   userid: string,
@@ -30,41 +31,91 @@ const createEnrolledCourseintoDB = async (
       { id: userid },
       { _id: 1 },
     );
-    if (!isstudentexists) {
-      throw new Error('this student is not exists ');
-    }
+
+    // if (!isstudentexists) {
+    //   throw new Error('this student is not exists ');
+    // }
 
     // checking if the student is already enrolled or not
 
-    const isstudentalreadyenrolled = await EnrolledCourse.findOne({
-      semesterRegistration: isofferedCourseExists.semesterregistration,
-      academicSemester: isofferedCourseExists.academicsemester,
-      student: isstudentexists._id,
-    });
+    // const isstudentalreadyenrolled = await EnrolledCourse.findOne({
+    //   semesterRegistration: isofferedCourseExists.semesterregistration,
+    //   academicSemester: isofferedCourseExists.academicsemester,
+    //   student: isstudentexists._id,
+    // });
 
-    if (isstudentalreadyenrolled) {
-      throw new Error('this student has already enrolled to the course');
-    }
+    // if (isstudentalreadyenrolled) {
+    //   throw new Error('this student has already enrolled to the course');
+    // }
+
+  // ami jei course tate enroll korte jacchi tar credit ...
+    const isSemesterRegestrationexist = await semesterregistraionmodel
+      .findById({
+        _id: isofferedCourseExists.semesterregistration,
+      },{_id:-1})
+      .select('maxcredit',);
+      console.log( 'enroll kora course credit ', isSemesterRegestrationexist?.maxcredit);
+
+    // retriving enrolled courses credit for that student
+
+    const isEnrolledCourses = await EnrolledCourse.aggregate([
+      {
+        $match: {
+          semesterRegistration: isofferedCourseExists.semesterregistration,
+          student: isstudentexists?._id,
+        },
+      },
+
+      {
+        $lookup: {
+          from: 'courses', // related collection name (model er collection name check kore niben)
+          localField: 'course',
+          foreignField: '_id',
+          as: 'enrolledcoursedetails',
+        },
+      },
+      {
+        $unwind: '$enrolledcoursedetails',
+      },
+      {
+        $project: {
+          _id: 0, // hide EnrolledCourse _id
+          credits: '$enrolledcoursedetails.credits', // only credits field show
+        },
+      },
+      {
+        $group:{_id:null,totalEnrolledCredits :{$sum:'$enrolledcoursedetails.credits'}}
+      },
+         {
+        $project: {
+          _id: 0, // hide EnrolledCourse _id
+          totalEnrolledCredits:1 , // only credits field show
+        },
+      },
+    ]);
+    console.log( 'amar enrolled credits',isEnrolledCourses);
 
     // check total creadits exceeds maxcredtits or not
 
-    const result = await EnrolledCourse.create(
-      [
-        {
-          semesterRegistration: isofferedCourseExists.semesterregistration,
-          academicSemester: isofferedCourseExists.academicsemester,
-          academicFaculty: isofferedCourseExists.academic_faculty,
-          academicDepartment: isofferedCourseExists.academic_department,
-          offeredcourse: offeredcourse,
-          course: isofferedCourseExists.course,
-          student: isstudentexists._id,
-          faculty: isofferedCourseExists.academic_faculty,
-          isEnrolled: true,
-          iscompleted: false,
-        },
-      ],
-      { session },
-    );
+ 
+  
+    // const result = await EnrolledCourse.create(
+    //   [
+    //     {
+    //       semesterRegistration: isofferedCourseExists.semesterregistration,
+    //       academicSemester: isofferedCourseExists.academicsemester,
+    //       academicFaculty: isofferedCourseExists.academic_faculty,
+    //       academicDepartment: isofferedCourseExists.academic_department,
+    //       offeredcourse: offeredcourse,
+    //       course: isofferedCourseExists.course,
+    //       student: isstudentexists?._id,
+    //       faculty: isofferedCourseExists.academic_faculty,
+    //       isEnrolled: true,
+    //       iscompleted: false,
+    //     },
+    //   ],
+    //   { session },
+    // );
 
     const maxcapacity = isofferedCourseExists.maxcapacity - 1;
     await offerecoursemodel.findByIdAndUpdate(
@@ -76,7 +127,7 @@ const createEnrolledCourseintoDB = async (
     );
     // amar write operation ekhanei shesh hoise ... tai commit ...
     await session.commitTransaction();
-    return result;
+    return null;
   } catch (err) {
     await session.abortTransaction();
     throw new Error(`transaction is abborted --->${err}`);
