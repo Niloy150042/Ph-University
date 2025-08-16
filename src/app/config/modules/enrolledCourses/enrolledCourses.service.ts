@@ -26,7 +26,10 @@ const createEnrolledCourseintoDB = async (
       throw new Error('Offered course room is full');
     }
 
-    const isstudentexists = await studentmodel.findOne({ id: userid });
+    const isstudentexists = await studentmodel.findOne(
+      { id: userid },
+      { _id: 1 },
+    );
     if (!isstudentexists) {
       throw new Error('this student is not exists ');
     }
@@ -42,6 +45,8 @@ const createEnrolledCourseintoDB = async (
     if (isstudentalreadyenrolled) {
       throw new Error('this student has already enrolled to the course');
     }
+
+    // check total creadits exceeds maxcredtits or not
 
     const result = await EnrolledCourse.create(
       [
@@ -74,7 +79,7 @@ const createEnrolledCourseintoDB = async (
     return result;
   } catch (err) {
     await session.abortTransaction();
-    throw new Error(`transaction is abborted -${err}`);
+    throw new Error(`transaction is abborted --->${err}`);
   } finally {
     session.endSession();
   }
