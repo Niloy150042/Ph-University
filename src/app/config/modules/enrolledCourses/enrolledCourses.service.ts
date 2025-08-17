@@ -63,9 +63,12 @@ const createEnrolledCourseintoDB = async (
       isSemesterRegestrationexist?.maxcredit,
     );
 
-    // retriving enrolled course creadit for that student 
+    // retriving enrolled course creadit for that student
 
-    const enrolledCourseCredit = await Coursemodel.findById({_id:isofferedCourseExists.course},{credits:1 , _id:-1})
+    const enrolledCourseCredit = await Coursemodel.findById(
+      { _id: isofferedCourseExists.course },
+      { credits: 1, _id: -1 },
+    );
 
     // retriving  all enrolled course credit for that student
 
@@ -97,7 +100,7 @@ const createEnrolledCourseintoDB = async (
       {
         $group: {
           _id: null,
-          totalEnrolledCredits: { $sum:'$credits' },
+          totalEnrolledCredits: { $sum: '$credits' },
         },
       },
       {
@@ -119,11 +122,15 @@ const createEnrolledCourseintoDB = async (
     // console.log('enrolled kora course creadit',enrolledCourseCredit?.credits);
 
     // console.log(totalcredits+enrolledCourseCredit?.credits);
-    
-    if( totalcredits && isSemesterRegestrationexist && totalcredits+enrolledCourseCredit?.credits >isSemesterRegestrationexist?.maxcredit){
-      throw new Error('Credits limits exceed')
+
+    if (
+      totalcredits &&
+      isSemesterRegestrationexist &&
+      totalcredits + enrolledCourseCredit?.credits >
+        isSemesterRegestrationexist?.maxcredit
+    ) {
+      throw new Error('Credits limits exceed');
     }
-   
 
     const result = await EnrolledCourse.create(
       [
@@ -162,6 +169,46 @@ const createEnrolledCourseintoDB = async (
   }
 };
 
+const updateEnrolledCourseMarksintoDB = async (
+  payload: Partial<TenrolledCourses>,
+  adminId: string,
+) => {
+  const { semesterRegistration, offeredcourse, student, courseMarks } = payload;
+  // check if they are exist into db or not
+  const isSemesterRegistrationExist = await semesterregistraionmodel.findById({
+    _id: semesterRegistration,
+  });
+  if (!isSemesterRegistrationExist) {
+    throw new Error('Semseter registration is not exist in DB');
+  }
+  const isOfferedCourseExist = await offerecoursemodel.findById(offeredcourse);
+  if (!isOfferedCourseExist) {
+    throw new Error('offeredcourse  is not exist in DB');
+  }
+
+  const isStudentExist = await studentmodel.findById(student);
+  if (!isStudentExist) {
+    throw new Error('student  is not exist in DB');
+  }
+
+  const modifiedData: Record<string, unknown> = {
+    ...courseMarks,
+  };
+
+  if (courseMarks && Object.keys(courseMarks).length) {
+    for (const [key, value] of Object.entries(courseMarks)) {
+      modifiedData[`courseMarks.${key}`] = value;
+    }
+  }
+  const result = await EnrolledCourse.findOneAndUpdate(
+    { semesterRegistration },
+    modifiedData,
+    { new: true },
+  );
+  return result;
+};
+
 export const enrolledCourseServie = {
   createEnrolledCourseintoDB,
+  updateEnrolledCourseMarksintoDB,
 };

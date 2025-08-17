@@ -15,4 +15,6 @@ router.post(
   enrolledCourseController.createEnrolledCourse,
 );
 
+router.patch('/update-course-marks', auth(USER_ROLE.admin),myarmymiddlware(enrolledCourseValidation.updateEnrolledCourseValidationSchema),enrolledCourseController.updateEnrolledCourseMarks)
+
 export const enrolledCourseRouter = router;
