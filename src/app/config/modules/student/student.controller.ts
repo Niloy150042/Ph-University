@@ -1,7 +1,6 @@
 import { studentservices } from './student.servive';
 import catchasync from '../utils/catchasync'
-import globalErrorHandler from '../utils/globalerrohandler';
-import { NextFunction } from 'express';
+
 
 //assigning higher order function 
 
@@ -24,7 +23,7 @@ const getallstudent = catchasync(async (req, res, next) => {
     const result = await studentservices.getallstudentfromdb(req.query);
     res.status(201).send({
       success: true,
-      message: 'congrats! all data is retrived',
+      message: 'congrats! all student data is retrived',
       data: [result],
     });
   
