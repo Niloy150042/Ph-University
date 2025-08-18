@@ -6,7 +6,7 @@ export type Tuser = {
   password?: string;
   needpasswordchange: boolean;
   isdeleted: boolean;
-  role: 'super-admin'| 'admin' | 'student' | 'faculty';
+  role: 'supeAdmin'| 'admin' | 'student' | 'faculty';
   status: 'in-progress' | 'blocked';
 };
 

@@ -9,6 +9,7 @@ const facultyrouter = express.Router();
 
 facultyrouter.post(
   '/create-academic-faculty',
+  auth(USER_ROLE.superAdmin,USER_ROLE.admin),
   myarmymiddlware(faculty_validation.academic_faculty_validationschema),
   facultycontroller.createacademicfaculty,
 );

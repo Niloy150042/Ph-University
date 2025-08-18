@@ -37,4 +37,5 @@ authrouter.post(
   Authcontroller.resetpassword,
 );
 
+
 export default authrouter;

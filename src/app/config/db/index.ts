@@ -6,7 +6,7 @@ const superAdmin = {
   password: process.env.SUPER_ADMIN_PASS,
   needpasswordchange: true,
   isdeleted: false,
-  role: 'super-admin',
+  role: 'superAdmin',
   status: 'in-progress',
 };
 
