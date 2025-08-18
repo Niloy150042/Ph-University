@@ -21,7 +21,7 @@ const laststudentid = async (semester: Tacademic_semester) => {
 export const generatestudentid = async (semester: Tacademic_semester) => {
   const currentid = (0).toString().padStart(4, '0'); // 0000
   const lastenrlledstudentid = await laststudentid(semester);
-  console.log(lastenrlledstudentid);
+  // console.log(lastenrlledstudentid);
 
   if (lastenrlledstudentid) {
     // Same semester, increment the last 4 digits

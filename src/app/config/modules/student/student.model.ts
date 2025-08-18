@@ -93,6 +93,7 @@ const studentschema = new Schema<student>({
   },
   profileimage: {
     type: String,
+    default:''
   },
 
   academicdepartment:{

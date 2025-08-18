@@ -6,14 +6,16 @@ import { studentmodel } from '../student/student.model';
 import { Tuser } from './user.interface';
 import usermodel from './user.model';
 import { generatestudentid } from './user.utils';
-import  { JwtPayload } from 'jsonwebtoken';
+import { JwtPayload } from 'jsonwebtoken';
 import { adminmodel } from '../admin/admin.model';
 import { faculty_model } from '../academic_faculty/academic_faculty.model';
 import { sendImageToCloudinary } from '../utils/sendImgaeToCloudinary';
 
-
-const createstudentintodb = async (file:string, student: student, password: string) => {
-  const {path}=file
+const createstudentintodb = async (
+  file: Express.Multer.File | undefined,
+  student: student,
+  password: string,
+) => {
   const userdata: Partial<Tuser> = {};
 
   if (!student.email) {
@@ -36,9 +38,16 @@ const createstudentintodb = async (file:string, student: student, password: stri
     userdata.id = await generatestudentid(
       admissionsemester as Tacademic_semester,
     );
+
+    if (file) {
+      const { path } = file;
+      const imagename = `${userdata.id}-${student.name.firstname}`;
+      const image = await sendImageToCloudinary(imagename, path);
+      student.profileimage = image?.secure_url;
+    }
+
     // hosting profileimage url to cloudinary ->
-    const imagename =`${userdata.id}-${student.name.firstname}`
-   const image = await sendImageToCloudinary(imagename,path);
+
     const newuser = await usermodel.create([userdata], { session });
     if (!newuser) {
       throw new Error('user is not created successfully');
@@ -46,10 +55,8 @@ const createstudentintodb = async (file:string, student: student, password: stri
 
     student.id = newuser[0].id;
     student.user = newuser[0]._id;
-    student.profileimage=image?.secure_url
 
-
-    const newstudent = await studentmodel.create([student], {session});
+    const newstudent = await studentmodel.create([student], { session });
     if (!newstudent) {
       throw new Error('student is not created successfully');
     }
