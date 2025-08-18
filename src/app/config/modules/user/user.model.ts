@@ -27,7 +27,7 @@ const userschema = new Schema<Tuser>(
     },
     role: {
       type: String,
-      enum: ['admin', 'student', 'faculty'],
+      enum: ['admin', 'student', 'faculty','super-admin'],
     },
     status: {
       type: String,
@@ -43,7 +43,7 @@ const userschema = new Schema<Tuser>(
 
 userschema.pre('save', async function (next) {
   const saltround = 10;
-  const hashpassword = await bcrypt.hash(this.password, saltround);
+  const hashpassword = await bcrypt.hash(this.password as string, saltround);
   this.password = hashpassword;
   next();
 });
